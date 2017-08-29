@@ -102,3 +102,12 @@ ENV/
 
 
 .idea
+Würde .idea/dictionaries/ löschen
+Würde .idea/e2c.iml löschen
+Würde .idea/inspectionProfiles/ löschen
+Würde .idea/misc.xml löschen
+Würde .idea/modules.xml löschen
+Würde .idea/vcs.xml löschen
+Würde .idea/workspace.xml löschen
+Würde e2c/python/scripts/ löschen
+Würde e2c/python/setup.py löschen
