@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://github.com/enterstry/e2c/images/e2c_logo_transp.png"><br><br>
+  <img src="https://github.com/enterstry/e2c/blob/master/images/e2c_logo_transp.png"><br><br>
 </div>
 
 # E2c - Elastic Event Components
