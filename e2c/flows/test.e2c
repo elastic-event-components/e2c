@@ -1,0 +1,15 @@
+
+[default]
+
+    .err -- my_error
+    .trace -- my_trace
+        my_trace.avatar -- get_avatar
+
+    .run -- action1
+        action1.avatar -- get_avatar
+        action1.out -- action2
+        action1.out -- print
+            print.b -- .end
+
+    action2.out -- action3
+        action3.out -- .end
