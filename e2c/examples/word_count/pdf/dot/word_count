@@ -1,0 +1,13 @@
+// word_count
+digraph {
+	graph [label=word_count labeljust=r]
+	edge [color=blue fontcolor=blue labelheadcolor=blue]
+	"•" [color=green]
+	"•" -> list_files [label=run]
+	".end" [color=green]
+	list_files -> ".end" [label=load_file]
+	list_files -> open_file [label=load_file]
+	open_file -> word_count [label=out]
+	".end" [color=green]
+	word_count -> ".end" [label=out]
+}

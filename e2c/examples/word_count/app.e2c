@@ -1,0 +1,10 @@
+
+[word_count]
+
+    .run -- list_files
+
+    list_files.load_file -- .end
+    list_files.load_file -- open_file
+        open_file.out -- word_count
+            word_count.out -- .end
+

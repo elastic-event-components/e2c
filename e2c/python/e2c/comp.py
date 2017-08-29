@@ -36,7 +36,7 @@ class Result(object):
 
 
 class E2c(Generic[Request, Response]):
-    def __init__(self, config_text: str):
+    def __init__(self, config_text: str=None):
         self.name = DEFAULT
         self._result = Result()
         self._tracer = None
