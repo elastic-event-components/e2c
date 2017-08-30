@@ -16,6 +16,8 @@ the flow between nodes. Elastic Event Components also includes flow visualizatio
 #### *Try your first E2c program*
 ```shell
 $ python
+```
+
 ```python
 >>> from e2c import E2c
 >>> config = (
