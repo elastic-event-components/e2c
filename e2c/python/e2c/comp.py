@@ -36,7 +36,7 @@ class Result(object):
 
 
 class E2c(Generic[Request, Response]):
-    def __init__(self, config_text: str=None):
+    def __init__(self, config_list: List[str]=None):
         self.name = DEFAULT
         self._result = Result()
         self._tracer = None
@@ -44,8 +44,8 @@ class E2c(Generic[Request, Response]):
         self.actor(SELF, self._process)
         self.actor(END, self._result.run)
         self.activate_trace = True
-        if config_text:
-            self.configure_by_text(config_text)
+        if config_list:
+            self.configure_by_list(config_list)
 
     def _process(self, request, run, err=None, trace=None):
         try:
@@ -88,9 +88,9 @@ class E2c(Generic[Request, Response]):
 
     def configure_by_file(self, file_name: str):
         with open(file_name, 'r') as f:
-            self.configure_by_text(f.readlines())
+            self.configure_by_list(f.readlines())
 
-    def configure_by_text(self, lines: List[str]):
+    def configure_by_list(self, lines: List[str]):
         for line in lines:
             line = line.replace('\n', '').replace(' ', '').strip()
 
