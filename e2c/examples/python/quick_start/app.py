@@ -8,4 +8,4 @@ e2c = E2c[str, str](config)
 e2c.actor('action', lambda data, out: out(data))
 e2c.actor('print', lambda data: print(data))
 
-e2c.run('hello')
+e2c.visualize()

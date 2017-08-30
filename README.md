@@ -30,7 +30,15 @@ $ python
 >>>
 >>> e2c.run('hello')
 hello
+>>> e2c.visualize()
 ```
+
+<div align="center">
+  <img src="https://github.com/enterstry/e2c/blob/master/images/quickstart.png"><br><br>
+</div>
+
+
+
 
 ## License
 
