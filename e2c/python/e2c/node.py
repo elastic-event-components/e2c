@@ -29,7 +29,9 @@ class Node(object):
 
     def clone(self) -> 'Node':
         node = Node(self.comp, self.name, self.callable)
-        node.nodes.update(self.nodes)
+        for name, nodes in self.nodes.items():
+            for n in nodes:
+                node.on(name, n.clone())
         return node
 
     @property

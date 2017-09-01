@@ -9,3 +9,4 @@ e2c.actor('action', lambda data, out: out(data))
 e2c.actor('print', lambda data: print(data))
 
 e2c.visualize()
+e2c.run('hello')

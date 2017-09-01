@@ -116,7 +116,7 @@ class E2c(Generic[Request, Response]):
             self._actors[output_name].on(
                 output_channel, self._actors[input_name])
 
-    def run(self, request: Request, operation: str = None) -> Response:
+    def run(self, request: Request=None, operation: str = None) -> Response:
         if not operation:
             self._actors[SELF].run(request)
         else:
