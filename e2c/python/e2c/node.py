@@ -31,7 +31,7 @@ class Node(object):
         node = Node(self.comp, self.name, self.callable)
         for name, nodes in self.nodes.items():
             for n in nodes:
-                node.on(name, n.clone())
+                node.on(name, n)
         return node
 
     @property
