@@ -26,4 +26,6 @@ def resolve(node: 'Node', values=[]):
         elif input_node:
             param = Param(input_node, nodes[1:])
             params.append(param)
+        else:
+            params.append(None)
     return params

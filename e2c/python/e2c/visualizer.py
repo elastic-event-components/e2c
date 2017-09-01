@@ -16,7 +16,7 @@ def visualize(folder: str, name, nodes: Dict[str, Node]):
             if output_name == '•':
                 dot.node(output_name, None, {'color': 'green'})
             for input_node in inputs:
-                if input_node.name == '.end':
+                if input_node.name == '.out':
                     dot.node(input_node.name, None, {'color': 'green'})
 
                 edge_attr = {}

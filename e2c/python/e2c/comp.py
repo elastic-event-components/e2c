@@ -11,6 +11,8 @@ T = TypeVar('T', bound='Flow')
 
 RUN = '.run'
 END = '.end'
+OUT = '.out'
+
 # ERR = '.err'
 # TRC = '.trace'
 
@@ -40,16 +42,18 @@ class E2c(Generic[Request, Response]):
         self.name = DEFAULT
         self._result = Result()
         self._tracer = None
+        self._end = None
         self._actors: Dict[str, Node] = {}
         self.actor(SELF, self._process)
-        self.actor(END, self._result.run)
+        self.actor(OUT, self._result.run)
         self.activate_trace = True
         if config_list:
             self.configure_by_list(config_list)
 
-    def _process(self, request, run, err=None, trace=None):
+    def _process(self, request, run, end=None, err=None, trace=None):
         try:
             self._tracer = trace
+            self._end = end
             run(request)
         except Exception as exc:
             if not err: raise exc
@@ -124,6 +128,8 @@ class E2c(Generic[Request, Response]):
             runner.nodes['run'].clear()
             runner.on('run', self._actors[operation])
             runner.run(request)
+        if self._end and self._end.node:
+            self._end.node.run(request)
         return self._result.value
 
     def run_continues(self, request: Request = None,

@@ -1,4 +1,4 @@
-from inspect import getfullargspec
+from inspect import getfullargspec, ismethod
 from typing import Callable, Any, Dict, List
 
 
@@ -38,5 +38,8 @@ class Node(object):
     def specs(self):
         if not self._specs and self.callable:
             result = getfullargspec(self.callable)
-            self._specs = dict([(a, result.annotations.get(a, Any)) for a in result.args])
+            args = result.args
+            if ismethod(self.callable):
+                args = args[1:] # skip self
+            self._specs = dict([(a, result.annotations.get(a, Any)) for a in args])
         return self._specs

@@ -25,6 +25,8 @@ e2c.configure_by_file('app.e2c')
 e2c.actor('list_files', list_files)
 e2c.actor('open_file', open_file)
 e2c.actor('word_count', word_count)
+e2c.actor('error', lambda x: print('error', x))
+e2c.actor('end', lambda x: print('end'))
 
 e2c.visualize('pdf')
 e2c.run_continues('data', lambda out: print(out))
