@@ -1,0 +1,18 @@
+// show_room
+digraph {
+	graph [label=show_room labeljust=r]
+	edge [color=blue fontcolor=blue labelheadcolor=blue]
+	"•" [color=green]
+	".out" [color=green]
+	"•" -> ".out" [label=err color=red fontcolor=red]
+	"•" [color=green]
+	"•" -> show_room [label=run]
+	".out" [color=green]
+	show_room -> ".out" [label=out]
+	show_room -> "get_room[id]" [label=get_room]
+	show_room -> "get_exits[id]" [label=get_exists]
+	show_room -> get_current_avatar [label=get_avatar]
+	get_current_avatar -> get_avatar_id_from_session [label=get_avatar_id]
+	get_current_avatar -> "get_avatar[id]" [label=get_avatar]
+	"get_exits[id]" -> "get_room[id]" [label=get_room]
+}

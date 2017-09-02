@@ -1,0 +1,22 @@
+// move_to_room
+digraph {
+	graph [label=move_to_room labeljust=r]
+	edge [color=blue fontcolor=blue labelheadcolor=blue]
+	"•" [color=green]
+	".out" [color=green]
+	"•" -> ".out" [label=err color=red fontcolor=red]
+	"•" [color=green]
+	"•" -> move_to_room [label=run]
+	"•" -> show_room [label=run]
+	".out" [color=green]
+	move_to_room -> ".out" [label=out]
+	move_to_room -> get_next_position [label=get_next_position]
+	move_to_room -> get_current_avatar [label=get_avatar]
+	move_to_room -> update_avatar [label=update_avatar]
+	".out" [color=green]
+	show_room -> ".out" [label=out]
+	get_current_avatar -> get_avatar_id_from_session [label=get_avatar_id]
+	get_current_avatar -> "get_avatar[id]" [label=get_avatar]
+	".out" [color=green]
+	update_avatar -> ".out" [label=out]
+}
