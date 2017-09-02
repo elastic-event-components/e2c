@@ -1,0 +1,15 @@
+
+[run_avatar_name]
+
+    .err -- .out
+    .err -- restart
+        restart.next -- set_avatar_name
+
+    .run -- set_avatar_name
+
+        set_avatar_name.ask -- .out
+        set_avatar_name.store -- store_avatar_name
+            store_avatar_name.out -- .out
+            store_avatar_name.set_avatar_id -- set_avatar_to_session
+            store_avatar_name.stored -- .next
+

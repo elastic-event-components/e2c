@@ -1,0 +1,14 @@
+
+[main]
+
+    .trace -- trace
+    .err -- .out
+
+    .run -- main
+        main.out -- .out
+
+        main.show_room -- show_room
+            show_room.out -- .out
+
+        main.move_avatar -- move_avatar
+            move_avatar.out -- .out

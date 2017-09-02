@@ -1,0 +1,15 @@
+
+[run_avatar_sex]
+
+    .err -- .out
+    .err -- restart
+        restart.next -- set_avatar_sex
+
+    .run -- set_avatar_sex
+
+        set_avatar_sex.ask -- .out
+        set_avatar_sex.store -- store_avatar_sex
+            store_avatar_sex.out -- .out
+            store_avatar_sex.get_avatar_id -- get_avatar_id_from_session
+            store_avatar_sex.stored -- .next
+

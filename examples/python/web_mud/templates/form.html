@@ -1,0 +1,30 @@
+<html>
+    <head>
+        <title>Web Mud</title>
+        <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+    </head>
+    <body>
+        <div id="container">
+            <div class="title">
+                <h1>Multi User Dungeon</h1>
+            </div>
+
+            <output-msg>{{output | safe }}</output-msg>
+
+            <div id="content">
+                <form method="post" action="{{ url_for('root') }}">
+                    <br>
+                    <input-msg>
+                        {% if input %}
+                            >>> {{input}}
+                        {% endif %}
+                    </input-msg><br>
+                    <span id="prompt-char">></span>
+                    <input id="prompt" autocomplete="off" autofocus type="text" name="input"/><br>
+                    <br><input hidden type="submit"  />
+                </form>
+            </div>
+            <br>
+        </div>
+    </body>
+</html>

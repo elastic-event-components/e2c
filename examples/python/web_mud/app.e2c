@@ -1,0 +1,18 @@
+
+[app]
+    .run -- intro
+    .trace -- trace
+    .err -- .out
+
+        intro.out -- .out
+
+        intro.new -- setup
+            setup.out -- .out
+
+        intro.load -- load_avatar_by_name
+            load_avatar_by_name.get_avatar -- get_avatar_by_name
+            load_avatar_by_name.set_avatar_to_session -- set_avatar_to_session
+            load_avatar_by_name.load_world -- .out
+            load_avatar_by_name.load_world -- main
+                main.out -- .out
+

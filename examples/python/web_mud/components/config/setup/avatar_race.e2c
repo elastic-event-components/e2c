@@ -1,0 +1,14 @@
+
+[run_avatar_race]
+
+    .err -- .out
+    .err -- restart
+        restart.next -- set_avatar_race
+
+    .run -- set_avatar_race
+
+        set_avatar_race.ask -- .out
+        set_avatar_race.store -- store_avatar_race
+            store_avatar_race.out -- .out
+            store_avatar_race.get_avatar_id -- get_avatar_id_from_session
+            store_avatar_race.stored -- .next

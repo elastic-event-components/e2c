@@ -1,0 +1,16 @@
+
+[show_room]
+
+    .err -- .out
+    .run -- show_room
+
+        show_room.out -- .out
+        show_room.get_room -- get_room[id]
+        show_room.get_exists -- get_exits[id]
+            get_exits[id].get_room -- get_room[id]
+
+        show_room.get_avatar -- get_current_avatar
+
+            get_current_avatar.get_avatar_id -- get_avatar_id_from_session
+            get_current_avatar.get_avatar -- get_avatar[id]
+

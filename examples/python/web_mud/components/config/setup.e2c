@@ -1,0 +1,21 @@
+
+[setup]
+
+    .trace -- trace
+    .err -- .out
+
+    .run -- run_avatar_name
+        run_avatar_name.out -- .out
+        run_avatar_name.next -- run_avatar_password
+
+        run_avatar_password.out -- .out
+        run_avatar_password.next -- run_avatar_race
+
+        run_avatar_race.out -- .out
+        run_avatar_race.next -- run_avatar_sex
+
+        run_avatar_sex.out -- .out
+        run_avatar_sex.next -- show_welcome
+            show_welcome.out -- .out
+
+

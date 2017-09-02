@@ -1,0 +1,17 @@
+
+[move_to_room]
+
+    .err -- .out
+    .run -- move_to_room
+
+        move_to_room.out -- .out
+        move_to_room.get_next_position -- get_next_position
+        move_to_room.get_avatar -- get_current_avatar
+        move_to_room.update_avatar -- update_avatar
+            update_avatar.out -- .out
+
+            get_current_avatar.get_avatar_id -- get_avatar_id_from_session
+            get_current_avatar.get_avatar -- get_avatar[id]
+
+   .run -- show_room
+        show_room.out -- .out
