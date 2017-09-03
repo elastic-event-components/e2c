@@ -16,6 +16,5 @@ class Exit(object):
 
     @property
     def title(self):
-        direction = str(Room.DIRECTION_NAMES[self.direction]).title()
-        # direction = direction[0:4] + Colors.WHITE_TXT(direction[4]) + direction[5:]
+        direction = str(Room.DIRECTION_NAMES[self.direction])
         return direction + " - " + self.name

@@ -23,7 +23,7 @@ def run(cmd: str, out: Callable[[str], None]) -> None:
     e2c.actor('move_avatar', room.run_move)
 
     e2c.configure_by_file(folder + '/config/main.e2c')
-    e2c.visualize('components/graphviz/main')
+    # e2c.visualize('components/graphviz/main')
 
     start_actor = web.session.get_state('main')
     e2c.run_continues(cmd, out, start_actor)

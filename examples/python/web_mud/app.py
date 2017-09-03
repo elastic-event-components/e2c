@@ -30,7 +30,8 @@ def root():
     e2c.actor('get_avatar_by_name', repository.avatar.get_by_name)
     e2c.actor('load_avatar_by_name', commands.avatar.load_avatar_by_name)
     e2c.actor('set_avatar_to_session', web.session.set_avatar_to_session)
-    e2c.visualize('components/graphviz')
+
+    # e2c.visualize('components/graphviz')
 
     def collect_data(result: str):
         output.append(str(result))

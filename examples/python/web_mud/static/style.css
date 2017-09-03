@@ -81,3 +81,7 @@ eo {
 err {
     color: darkorange;
 }
+
+key {
+    font-weight: bold;
+}
