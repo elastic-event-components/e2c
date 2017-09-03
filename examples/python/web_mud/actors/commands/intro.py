@@ -13,16 +13,12 @@ def run(cmd: str,
             'Ein kleiner grüner Steinbeisser erscheint.<br>'
             '<br>'
             'Der Steinbeisser sagt:<br>'
-            '  ''Willkommen in Loki.''<br>'
-            '  ''Dieses Mud befindet sich in Franken.''<br>'
-            '  ''Durch Loki kannst Du Dir viel einfacher Dinge mergen.''<br>'
-            '<br>'
-            ' ''Wenn Du Loki einfach mal ausprobieren möchtest, so nenne dich "gast".''<br>'
+            '  ''Willkommen im Mud.''<br>'
             '<br>'
             'Der Steinbeisser warnt dich:<br>'
             '  ''Wehe, Du machst hier etwas kaputt.<br>'''
             '<br>'
-            'Der Steinbeisser verschwindet wieder, und Du wachst in einer anderen Welt auf.<br>'
+            'Der Steinbeisser verschwindet wieder, und Du wachst in einer anderen Welt wieder auf.<br>'
             'Wie heisst Du denn ("neu" für neuen Avatar)?<br>')
         out(text)
     elif cmd == 'neu':
