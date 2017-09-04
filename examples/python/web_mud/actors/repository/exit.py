@@ -5,10 +5,10 @@ from examples.python.web_mud.contracts.models import Room
 
 
 def get_list(avatar_id: int, room_id: int, get_room: Callable[[int, int], Room]) -> list:
-    from ..repository import RoomExitModel
+    from ..repository import ExitModel
 
     exits = []
-    for entity in RoomExitModel.select().where(RoomExitModel.room_id == room_id):
+    for entity in ExitModel.select().where(ExitModel.room_id == room_id):
         if not entity.name:
             entity.name = get_room(avatar_id, entity.target_id).name
         exits.append(Exit(entity))
@@ -16,10 +16,10 @@ def get_list(avatar_id: int, room_id: int, get_room: Callable[[int, int], Room])
 
 
 def get_next_position(position: int, direction: str) -> None:
-    from ..repository import RoomExitModel
+    from ..repository import ExitModel
 
-    for entity in RoomExitModel.select().where(
-                    RoomExitModel.room_id == position,
-                    RoomExitModel.direct == direction):
+    for entity in ExitModel.select().where(
+                    ExitModel.room_id == position,
+                    ExitModel.direct == direction):
         return entity.target_id
     return None

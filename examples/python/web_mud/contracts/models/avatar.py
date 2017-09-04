@@ -1,4 +1,3 @@
-from .inventory import Inventory
 from .sex import Sex
 
 
@@ -39,9 +38,6 @@ class Creature(object):
         self.topic = entity.topic
 
         self.sex = entity.sex
-        self.inventory = Inventory()
-        self.skills = []
-        self.encumberance = 0
         self.char_class = None
         self.level = 1
         self.hp = 0
@@ -51,7 +47,7 @@ class Creature(object):
 
     @property
     def title(self):
-        self.name or self.DEFAULT_NAME
+        return self.name or self.DEFAULT_NAME
 
     def he_or_she(self):
         return 'er' if self.sex == 'male' else 'sie'
@@ -69,30 +65,4 @@ class Avatar(Creature):
     def __init__(self, entity):
         super(Avatar, self).__init__(entity)
         self.password = entity.password
-        self.char_class = None
-
-
-# ======================================================= #
-# AVATAR OBJECT
-# ======================================================= #
-
-
-class Guest(Creature):
-    anonymous = True
-    GUEST = 'Gast'
-
-    class ObjectView(object):
-        def __init__(self, d):
-            self.__dict__ = d
-
-    def __init__(self):
-        entity = self.ObjectView({
-            'id': None,
-            'name': self.GUEST,
-            'password': None,
-            'race': Creature.DEFAULT_RACE,
-            'guild': Creature.DEFAULT_GUILD,
-            'position': Creature.DEFAULT_POSITION,
-            'sex': None})
-        super(Guest, self).__init__(entity)
         self.char_class = None
