@@ -1,0 +1,8 @@
+// default
+digraph {
+	graph [label=default labeljust=r]
+	edge [color=blue fontcolor=blue labelheadcolor=blue]
+	"•" [color=green]
+	"•" -> action [label=run]
+	action -> print [label=out]
+}
