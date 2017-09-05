@@ -15,9 +15,9 @@ class Node(object):
             self.nodes[channel] = []
         self.nodes[channel].append(node)
 
-    def run(self, value=None):
+    def run(self, *args):
         from .resolve import resolve
-        params = resolve(self, [value])
+        params = resolve(self, [*args])
         if self.comp.on_trace and self.comp.activate_trace:
             self.comp.on_trace(self.name)
         self.callable(*params)
