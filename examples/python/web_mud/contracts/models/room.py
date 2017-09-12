@@ -32,7 +32,6 @@ class Room(object):
         self.name = entity.name or "Raum {}".format(self.id)
         self.description = entity.desc or ""
         self.zone = entity.zone or ""
-        self.occupants = {}
 
     @staticmethod
     def get_direction_name(direction, invert=False):

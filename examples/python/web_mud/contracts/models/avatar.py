@@ -1,6 +1,3 @@
-from .sex import Sex
-
-
 # ======================================================= #
 # RACE OBJECT
 # ======================================================= #
@@ -38,22 +35,11 @@ class Creature(object):
         self.topic = entity.topic
 
         self.sex = entity.sex
-        self.char_class = None
-        self.level = 1
-        self.hp = 0
-        self.sp = 0
-        self.ep = 0
-        self.xp = 0
+
 
     @property
     def title(self):
         return self.name or self.DEFAULT_NAME
-
-    def he_or_she(self):
-        return 'er' if self.sex == 'male' else 'sie'
-
-    def her_or_his(self):
-        return 'sein(e)' if self.sex == Sex.male else 'ihr(e)'
 
 
 # ======================================================= #
@@ -65,4 +51,3 @@ class Avatar(Creature):
     def __init__(self, entity):
         super(Avatar, self).__init__(entity)
         self.password = entity.password
-        self.char_class = None

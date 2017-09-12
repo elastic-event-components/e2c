@@ -19,7 +19,7 @@ $ python
 ```
 
 ```python
->>> from e2c import E2c
+>>> import e2c
 >>> config = (
 ... '.run -- action',
 ... 'action.out -- print')
