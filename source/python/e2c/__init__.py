@@ -1,1 +1,1 @@
-from .comp import E2c
+from .session import Session

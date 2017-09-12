@@ -9,17 +9,11 @@ Value = TypeVar('Value')
 
 T = TypeVar('T', bound='Flow')
 
-RUN = '.run'
-END = '.end'
-OUT = '.out'
-
-# ERR = '.err'
-# TRC = '.trace'
-
 SELF = '•'
 EDGE = '--'
 COMMENT = '//'
 DEFAULT = 'default'
+OUT = '.out'
 
 
 class Result(object):
@@ -37,8 +31,8 @@ class Result(object):
         return self.value
 
 
-class E2c(Generic[Request, Response]):
-    def __init__(self, config_list: List[str]=None):
+class Session(Generic[Request, Response]):
+    def __init__(self, config_list: List[str] = None):
         self.name = DEFAULT
         self._result = Result()
         self._tracer = None
@@ -74,18 +68,25 @@ class E2c(Generic[Request, Response]):
             self._actors[name] = Node(self, name, None)
         self._actors[name].callable = callable
 
-    def analyse(self):
-        print('===', self.name.upper(), '===')
-        for output_name, output_node in self._actors.items():
-            print('\t', output_name)
+    def analyse(self, quiet=True):
+        if not quiet:
+            print('===', self.name.upper(), '===')
+        for actor_name, output_node in self._actors.items():
+            if not quiet:
+                print('\t', actor_name)
             if not output_node.callable:
-                raise Exception('Node %s has no function' % output_node.name)
+                raise Exception('Actor %s has no function' % output_node.name)
+            if not hasattr(output_node.callable, '__call__'):
+                raise Exception('Actor %s is not callable' % output_node.name)
 
             for output_channel, nodes in output_node.nodes.items():
                 for input_node in nodes:
-                    print('\t\t', (output_channel, input_node.name))
+                    if not quiet:
+                        print('\t\t', (output_channel, input_node.name))
                     if not output_channel in output_node.specs:
-                        raise Exception('Channel %s is not parameter in operation %s' % (output_channel, output_name))
+                        raise Exception(
+                            'Event {} in actor {} is not a parameter in function.'.format(
+                                output_channel, actor_name))
 
     def visualize(self, folder: str = None):
         visualize(folder, self.name, self._actors)
@@ -120,7 +121,8 @@ class E2c(Generic[Request, Response]):
             self._actors[output_name].on(
                 output_channel, self._actors[input_name])
 
-    def run(self, request: Request=None, operation: str = None) -> Response:
+    def run(self, request: Request = None, operation: str = None) -> Response:
+        self.analyse(True)
         if not operation:
             self._actors[SELF].run(request)
         else:

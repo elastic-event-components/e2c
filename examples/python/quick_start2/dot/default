@@ -1,0 +1,12 @@
+// default
+digraph {
+	graph [label=default labeljust=r]
+	node [color=black fontcolor=black]
+	edge [color=orange fontcolor=orange]
+	"•" [color=orange]
+	"•" -> action [label=run]
+	".out" [color=orange]
+	action -> ".out" [label=output]
+	".out" [color=orange]
+	action -> ".out" [label=output]
+}
