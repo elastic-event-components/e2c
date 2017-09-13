@@ -5,8 +5,10 @@ digraph {
 	edge [color=orange fontcolor=orange]
 	"•" [color=orange]
 	"•" -> action [label=run]
+	action -> render [label=render]
+	action -> log [label=log]
 	".out" [color=orange]
-	action -> ".out" [label=output]
+	render -> ".out" [label=out]
 	".out" [color=orange]
-	action -> ".out" [label=output]
+	log -> ".out" [label=store]
 }

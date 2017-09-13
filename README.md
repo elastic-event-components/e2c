@@ -22,14 +22,23 @@ $ python
 >>> import e2c
 >>> config = (
 ... '.run -- action',
-... 'action.out -- print')
+... 'action.render -- render',
+... '   render.out -- .out',
+... 'action.log -- log',
+... '   log.store -- .out')
+>>>
+>>> def action(data: str, render, log):
+...    render(data)
+...    log('Render done!')
 >>>
 >>> sess = e2c.Session[str, str](config)
->>> sess.actor('action', lambda data, out: out(data))
->>> sess.actor('print', lambda data: print(data))
+>>> sess.actor('action', action)
+>>> sess.actor('render', lambda dat, out: out(dat))
+>>> sess.actor('log', lambda dat, store: store(dat))
 >>>
->>> sess.run('hello')
-hello
+>>> sess.run_continues('Hello E2C!', print)
+Hello e2c!
+Render done!
 ```
 
 <div align="center">
