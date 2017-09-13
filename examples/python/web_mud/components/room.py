@@ -23,7 +23,7 @@ def run_show(cmd: str, out: Callable[[str], None]) -> None:
     sess.actor('get_exits[id]', repository.exit.get_list)
 
     sess.configure_by_file(folder + '/config/room/show_room.e2c')
-    # e2c.visualize('components/graphviz/room')
+    # sess.visualize('components/graphviz/room')
 
     sess.run_continues(cmd, out)
 
@@ -41,6 +41,6 @@ def run_move(cmd: str, out: Callable[[str], None]) -> None:
     sess.actor('update_avatar', repository.avatar.update)
 
     sess.configure_by_file(folder + '/config/room/move_to_room.e2c')
-    # e2c.visualize('components/graphviz/room')
+    # sess.visualize('components/graphviz/room')
 
     sess.run_continues(cmd, out)

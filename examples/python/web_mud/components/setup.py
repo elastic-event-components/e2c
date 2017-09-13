@@ -27,7 +27,7 @@ def run_avatar_name(cmd, out: Callable[[str], None], next: Callable[[None], None
     sess.actor('.next', next)
 
     sess.configure_by_file(folder + '/config/setup/avatar_name.e2c')
-    # e2c.visualize('components/graphviz/setup')
+    # sess.visualize('components/graphviz/setup')
     sess.run_continues(cmd, out)
 
 
@@ -40,7 +40,7 @@ def run_avatar_password(cmd, out: Callable[[str], None], next: Callable[[None], 
     sess.actor('.next', next)
 
     sess.configure_by_file(folder + '/config/setup/avatar_password.e2c')
-    # e2c.visualize('components/graphviz/setup')
+    # sess.visualize('components/graphviz/setup')
     sess.run_continues(cmd, out)
 
 
@@ -53,7 +53,7 @@ def run_avatar_race(cmd, out: Callable[[str], None], next: Callable[[None], None
     sess.actor('.next', next)
 
     sess.configure_by_file(folder + '/config/setup/avatar_race.e2c')
-    # e2c.visualize('components/graphviz/setup')
+    # sess.visualize('components/graphviz/setup')
     sess.run_continues(cmd, out)
 
 
@@ -66,7 +66,7 @@ def run_avatar_sex(cmd, out: Callable[[str], None], next: Callable[[None], None]
     sess.actor('.next', next)
 
     sess.configure_by_file(folder + '/config/setup/avatar_sex.e2c')
-    # e2c.visualize('components/graphviz/setup')
+    # sess.visualize('components/graphviz/setup')
     sess.run_continues(cmd, out)
 
 
@@ -81,7 +81,7 @@ def run(cmd: str, out: Callable[[str], None]):
     sess.actor('show_welcome', commands.welcome.run)
 
     sess.configure_by_file(folder + '/config/setup.e2c')
-    # e2c.visualize('components/graphviz/setup')
+    #sess.visualize('components/graphviz/setup')
 
     start_actor = web.session.get_state('setup')
     sess.run_continues(cmd, out, start_actor)

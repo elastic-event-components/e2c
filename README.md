@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://github.com/enterstry/e2c/blob/master/images/e2c_logo_transp.png"><br><br>
+  <img src="https://github.com/enterstry/e2c/blob/master/images/e2c-logo.png"><br><br>
 </div>
 
 # E2c - Elastic Event Components
@@ -24,13 +24,12 @@ $ python
 ... '.run -- action',
 ... 'action.out -- print')
 >>>
->>> e2c = E2c[str, str](config)
->>> e2c.actor('action', lambda data, out: out(data))
->>> e2c.actor('print', lambda data: print(data))
+>>> sess = e2c.Session[str, str](config)
+>>> sess.actor('action', lambda data, out: out(data))
+>>> sess.actor('print', lambda data: print(data))
 >>>
->>> e2c.run('hello')
+>>> sess.run('hello')
 hello
->>> e2c.visualize()
 ```
 
 <div align="center">
