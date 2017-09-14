@@ -26,11 +26,11 @@ $ python
 ... '   render.out -- .out',
 ... 'action.log -- log',
 ... '   log.store -- .out')
->>>
+
 >>> def action(data: str, render, log):
 ...    render(data)
 ...    log('Render done!')
->>>
+
 >>> sess = e2c.Session[str, str](config)
 >>> sess.actor('action', action)
 >>> sess.actor('render', lambda dat, out: out(dat))
