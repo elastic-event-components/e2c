@@ -1,5 +1,5 @@
 from typing import Generic, TypeVar, List
-
+from . import errors
 Response = TypeVar('Response')
 
 

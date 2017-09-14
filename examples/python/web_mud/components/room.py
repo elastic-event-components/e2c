@@ -22,7 +22,7 @@ def run_show(cmd: str, out: Callable[[str], None]) -> None:
     sess.actor('get_room[id]', repository.room.get_or_create_by_id)
     sess.actor('get_exits[id]', repository.exit.get_list)
 
-    sess.configure_by_file(folder + '/config/room/show_room.e2c')
+    sess.load_graph(folder + '/config/room/show_room.e2c')
     # sess.visualize('components/graphviz/room')
 
     sess.run_continues(cmd, out)
@@ -40,7 +40,7 @@ def run_move(cmd: str, out: Callable[[str], None]) -> None:
     sess.actor('get_next_position', repository.exit.get_next_position)
     sess.actor('update_avatar', repository.avatar.update)
 
-    sess.configure_by_file(folder + '/config/room/move_to_room.e2c')
+    sess.load_graph(folder + '/config/room/move_to_room.e2c')
     # sess.visualize('components/graphviz/room')
 
     sess.run_continues(cmd, out)

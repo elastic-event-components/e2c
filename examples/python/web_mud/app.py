@@ -20,7 +20,7 @@ def trace(actor: str):
 def root():
     output = []
     sess = e2c.Session[str, str]()
-    sess.configure_by_file('app.e2c')
+    sess.load_graph('app.e2c')
 
     sess.actor('trace', trace)
     sess.actor('intro', commands.intro.run)

@@ -21,7 +21,7 @@ def word_count(content: str, out: Callable[[str], None]):
 
 
 sess = e2c.Session()
-sess.configure_by_file('app.e2c')
+sess.load_graph('app.e2c')
 sess.actor('list_files', list_files)
 sess.actor('open_file', open_file)
 sess.actor('word_count', word_count)

@@ -21,6 +21,6 @@ def run(cmd: str, out: Callable[[str], None]) -> None:
     sess.actor('main', commands.main.run)
     sess.actor('show_room', room.run_show)
     sess.actor('move_avatar', room.run_move)
-    sess.configure_by_file(folder + '/config/main.e2c')
+    sess.load_graph(folder + '/config/main.e2c')
     start_actor = web.session.get_state('main')
     sess.run_continues(cmd, out, start_actor)

@@ -1,34 +1,41 @@
 from inspect import getfullargspec, ismethod
 from typing import Callable, Any, Dict, List
+from . import errors
 
 
 class Node(object):
-    def __init__(self, comp, name: str, callable: Callable) -> None:
+    def __init__(self, session, name: str, callable: Callable) -> None:
         self.name = name
-        self.comp = comp
+        self.session = session
         self.callable = callable
         self.nodes: Dict[str, List['Node']] = {}
         self._specs = []
 
     def on(self, channel: str, node: 'Node'):
-        if channel not in self.nodes:
+        if not channel:
+            raise errors.E2CNodeError(
+                'Channel name cannot be None or empty!')
+        if not channel in self.nodes:
             self.nodes[channel] = []
         self.nodes[channel].append(node)
 
     def run(self, *args):
         from .resolve import resolve
         params = resolve(self, [*args])
-        if self.comp.on_trace and self.comp.activate_trace:
-            self.comp.on_trace(self.name)
+        if self.session.on_trace and self.session.activate_trace:
+            self.session.on_trace(self.name)
+        if not self.callable:
+            raise errors.E2CNodeError(
+                'Node {0} has no callable function!'.format(self.name))
         self.callable(*params)
 
     def run_with_params(self, *params):
-        if self.comp.on_trace and self.comp.activate_trace:
-            self.comp.on_trace(self.name)
+        if self.session.on_trace and self.session.activate_trace:
+            self.session.on_trace(self.name)
         return self.callable(*params)
 
     def clone(self) -> 'Node':
-        node = Node(self.comp, self.name, self.callable)
+        node = Node(self.session, self.name, self.callable)
         for name, nodes in self.nodes.items():
             for n in nodes:
                 node.on(name, n)

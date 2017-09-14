@@ -1,0 +1,10 @@
+
+
+[test-app]
+
+    .trace -- Trace
+
+    .run -- A
+        A.out -- B
+            B.out -- .out
+

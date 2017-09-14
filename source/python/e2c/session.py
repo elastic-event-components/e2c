@@ -1,6 +1,7 @@
 from typing import Callable, Generic, Dict, List, TypeVar
 
 from .node import Node
+from . import errors
 from .visualizer import visualize
 
 Request = TypeVar('Request')
@@ -42,12 +43,14 @@ class Session(Generic[Request, Response]):
         self.actor(OUT, self._result.run)
         self.activate_trace = True
         if config_list:
-            self.configure_by_list(config_list)
+            self.parse_graph(config_list)
 
     def _process(self, request, run, end=None, err=None, trace=None):
         try:
             self._tracer = trace
             self._end = end
+            if not run:
+                raise errors.E2CSessionError('Missing .run -- ? in graph!')
             run(request)
         except Exception as exc:
             if not err: raise exc
@@ -59,11 +62,15 @@ class Session(Generic[Request, Response]):
                 # deactivate trace in tracing process
                 # to avoid recursion
                 self.activate_trace = False
-                self._tracer(name)
+                if name != OUT:
+                    self._tracer(name)
             finally:
                 self.activate_trace = True
 
     def actor(self, name: str, callable: Callable):
+        if name in self._actors and self._actors[name].callable:
+            raise errors.E2CSessionError(
+                'Actor {} was already registered!'.format(name))
         if name not in self._actors:
             self._actors[name] = Node(self, name, None)
         self._actors[name].callable = callable
@@ -75,28 +82,36 @@ class Session(Generic[Request, Response]):
             if not quiet:
                 print('\t', actor_name)
             if not output_node.callable:
-                raise Exception('Actor %s has no function' % output_node.name)
+                raise errors.E2CSessionError(
+                    'Actor {} has no callable function!'.format(actor_name))
             if not hasattr(output_node.callable, '__call__'):
-                raise Exception('Actor %s is not callable' % output_node.name)
+                raise errors.E2CSessionError(
+                    'Actor {} is not a callable function!'.format(actor_name))
 
             for output_channel, nodes in output_node.nodes.items():
                 for input_node in nodes:
                     if not quiet:
                         print('\t\t', (output_channel, input_node.name))
                     if not output_channel in output_node.specs:
-                        raise Exception(
-                            'Event {} in actor {} is not a parameter in function.'.format(
+                        raise errors.E2CSessionError(
+                            '{} on actor {} is not a parameter in the callable function!'.format(
                                 output_channel, actor_name))
 
     def visualize(self, folder: str = None):
         visualize(folder, self.name, self._actors)
 
-    def configure_by_file(self, file_name: str):
-        with open(file_name, 'r') as f:
-            self.configure_by_list(f.readlines())
+    def load_graph(self, file_name: str):
+        try:
+            with open(file_name, 'r') as f:
+                self.parse_graph(f.readlines())
+        except Exception as exc:
+            raise errors.E2CSessionError(exc)
 
-    def configure_by_list(self, lines: List[str]):
-        for line in lines:
+    def parse_graph(self, lines: List[str]):
+        if not ''.join(lines):
+            raise errors.E2CParserError('No data to parse!')
+
+        for index, line in enumerate(lines, 1):
             line = line.replace('\n', '').replace(' ', '').strip()
 
             pos = line.find(COMMENT)
@@ -109,7 +124,15 @@ class Session(Generic[Request, Response]):
                 self.name = line[1:-1]
                 continue
 
+            if EDGE not in line:
+                raise errors.E2CParserError(
+                    'Missing {} in line {}!'.format(EDGE, index))
+
             output, input_name = line.split(EDGE)
+            if not input_name:
+                raise errors.E2CParserError(
+                    'Missing actor in line {}!'.format(index))
+
             output_name, output_channel = output.split('.', 1)
             output_name = output_name or SELF
 
@@ -121,20 +144,23 @@ class Session(Generic[Request, Response]):
             self._actors[output_name].on(
                 output_channel, self._actors[input_name])
 
-    def run(self, request: Request = None, operation: str = None) -> Response:
+    def run(self, request: Request = None, actor: str = None) -> Response:
         self.analyse(True)
-        if not operation:
+        if not actor:
             self._actors[SELF].run(request)
         else:
+            if actor not in self._actors:
+                raise errors.E2CSessionError(
+                    '{} is not a registered actor!'.format(actor))
             runner = self._actors[SELF].clone()
             runner.nodes['run'].clear()
-            runner.on('run', self._actors[operation])
+            runner.on('run', self._actors[actor])
             runner.run(request)
         if self._end and self._end.node:
             self._end.node.run(request)
         return self._result.value
 
     def run_continues(self, request: Request = None,
-                      result: Callable[[Response], None] = None, operation: str = None):
+                      result: Callable[[Response], None] = None, actor: str = None):
         self._result.value_callback = result
-        self.run(request, operation)
+        self.run(request, actor)

@@ -1,0 +1,10 @@
+
+
+[test-app]
+
+    .run -- A
+        A.out -- B
+            B.out -- .out
+
+    .end -- C
+
