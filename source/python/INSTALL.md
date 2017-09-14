@@ -8,7 +8,7 @@ incapable of interfering with or being affected by other Python programs on the 
 During the virtualenv installation process, you will install not only TensorFlow but also all the packages that TensorFlow requires.
 To start working with E2C, you simply need to "activate" the virtual environment. 
 All in all, virtualenv provides a safe and reliable mechanism for installing and running E2C.
-
+ 
 # Installing with virtualenv
 Take the following steps to install E2C with Virtualenv:
 
