@@ -14,5 +14,10 @@
 # limitations under the License.
 # ==============================================================================
 
+from . import avatar
+from . import room
+from . import exit
 
-from .session import Session
+from . import intro
+from . import welcome
+from . import main

@@ -14,5 +14,4 @@
 # limitations under the License.
 # ==============================================================================
 
-
-from .session import Session
+from .models import *

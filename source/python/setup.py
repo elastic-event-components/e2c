@@ -11,7 +11,7 @@ with open('scripts/require.txt') as f:
 setup(
     name='e2c',
     packages=find_packages(),
-    license='MIT',
+    license='Apache 2.0',
     platforms="any",
     version=version,
     author='Stefan Bergmann',

@@ -14,5 +14,6 @@
 # limitations under the License.
 # ==============================================================================
 
-
-from .session import Session
+from .avatar import *
+from .room import *
+from .exit import *

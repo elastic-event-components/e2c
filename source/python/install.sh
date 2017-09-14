@@ -15,4 +15,6 @@ pip install pylint
 pip install -I -r scripts/require.txt
 
 # install e2c as package.
+
 python setup.py install
+python setup.py clean --all
