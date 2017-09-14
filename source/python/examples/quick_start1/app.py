@@ -25,4 +25,4 @@ sess.actor('action', lambda data, out: out(data))
 sess.actor('print', lambda data: print(data))
 
 sess.visualize()
-sess.run('hello')
+sess.run('Hello, E2C')

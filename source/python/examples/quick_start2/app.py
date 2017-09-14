@@ -36,5 +36,5 @@ sess.actor('render', lambda dat, out: out(dat))
 sess.actor('log', lambda dat, store: store(dat))
 sess.visualize()
 
-sess.run_continues('Hello E2C', print)
+sess.run_continues('Hello, E2C', print)
 
