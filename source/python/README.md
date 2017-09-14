@@ -1,23 +1,28 @@
-# Elastic Event Components in Python
-Construct and execute Elastic Event Components in Python.
+<div align="center">
+  <img src="https://github.com/enterstry/e2c/blob/master/images/e2c-logo.png"><br><br>
+</div>
 
-> *WARNING*: The API defined in this package is not stable and can change
-> without notice. The same goes for the awkward package path
-> (`github.com/enterstry/e2c`).
+# E2C - Elastic Event Components
 
-## Getting Started
+**Elastic Event Components** is an open source software library to build flexible component using
+function flow graphs. The graph nodes represent any operations, while
+the graph edges represent the function parameters (event) that build
+the flow between nodes. Elastic Event Components also includes flow visualization.
 
-### Requirements:
-* [Git: e2c](https://github.com/enterstry/e2c.git)
-   The Elastic Event Component repository.
+## Installation
+*See [Installing E2C](https://github.com/enterstry/e2c/blob/master/INSTALL.md) for instructions 
+on how to build from source.*
 
-### Install
-Install Python 3.6
-* Preperation: 
-   * `install.sh` installs all the requirements:
-       * Python 3.6
-       * Virtual environment (venv) in `venv`
-   * `source venv/bin/activate` to activate the virtual environment.
 
-### Start
-TODO...
+<div align="center">
+  <img src="https://github.com/enterstry/e2c/blob/master/images/quickstart.png"><br><br>
+</div>
+
+
+## For more information
+
+* [E2C website](http://www.elastic-event-components.org)
+
+## License
+
+[Apache 2.0 License](LICENSE)
