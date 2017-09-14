@@ -46,6 +46,7 @@ To validate your E2C installation, do the following:
 ```shell
 $ (venv)$ pytest tests
 ```
+
 ## Run a short E2C program
 1. Navigate to the directory 'source/python/examples/quick_start1' and run the following:
 ```shell
