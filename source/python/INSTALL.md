@@ -1,8 +1,6 @@
-# Installing E2C
+# Installing E2C on Ubuntu
 The following guides explain how to install a version 
-of E2C on Ubuntu that enables you to write applications:
-
-* [Installing E2C on Ubuntu to develop in Python](http://www.elastic-event-components.org)
+of E2C on Ubuntu that enables you to write applications in Python.
 
 We recommend the virtualenv installation. 
 Virtualenv is a virtual Python environment isolated from other Python development, 
