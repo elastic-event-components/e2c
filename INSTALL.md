@@ -33,20 +33,20 @@ When you are finish using E2C, you may deactivate the environment by invoking th
 $ (venv)$ deactivate 
 ```
 
-#Validate the installation
+# Validate the installation
 To validate your E2C installation, do the following:
 
 1. Ensure that your environment is prepared to run the test suite.
 2. Run a short E2C program.
 
-##Run the tests
+## Run the tests
 1. Start a terminal.
 2. Activate your virtualenv environment.
 3. Navigate to the directory 'source/python' and run the following:
 ```shell
 $ (venv)$ pytest tests
 ```
-##Run a short E2C program
+## Run a short E2C program
 1. Navigate to the directory 'source/python/examples/quick_start1' and run the following:
 ```shell
 $ (venv)$ python app.py
