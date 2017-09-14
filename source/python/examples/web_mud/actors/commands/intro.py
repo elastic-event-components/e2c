@@ -23,18 +23,13 @@ def run(cmd: str,
         load: Callable[[str], None]):
     if not cmd:
         text = (
-            'Du verlierst die Besinnung...<br>'
+            'Du stehst vor einer verschlossenen Tür.<br>'
+            'Auf der rechten Seite vor der Tür steht eine Wache die grimmig guckt.<br>'
             '<br>'
-            'Du tauchst in einen Strudel bunter Farben ein.<br>'
-            'Ein kleiner grüner Steinbeisser erscheint.<br>'
+            'Die Wache sagt:<br><br>'
+            '''Willkommen in unserer Stadt.<br>'''
+            '''Wenn du hier durch möchtest, dann verrate mir erst deinen Namen.<br>'''
             '<br>'
-            'Der Steinbeisser sagt:<br>'
-            '  ''Willkommen im Mud.''<br>'
-            '<br>'
-            'Der Steinbeisser warnt dich:<br>'
-            '  ''Wehe, Du machst hier etwas kaputt.<br>'''
-            '<br>'
-            'Der Steinbeisser verschwindet wieder, und Du wachst in einer anderen Welt wieder auf.<br>'
             'Wie heisst Du denn ("neu" für neuen Avatar)?<br>')
         out(text)
     elif cmd == 'neu':
