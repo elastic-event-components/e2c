@@ -47,7 +47,9 @@ Render done!
 </div>
 
 
+## For more information
 
+* [E2C website](http://www.elastic-event-components.org)
 
 ## License
 
