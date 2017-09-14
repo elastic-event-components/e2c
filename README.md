@@ -6,7 +6,7 @@
 
 **Elastic Event Components** is an open source software library to build flexible component using
 function flow graphs. The graph nodes represent any operations, while
-the graph edges represent the function parameters (event) that build
+the graph edges represent the function parameters that build
 the flow between nodes. Elastic Event Components also includes flow visualization.
 
 ## Installation
@@ -48,9 +48,7 @@ Render done!
 
 
 ## For more information
-
 * [E2C website](http://www.elastic-event-components.org)
 
 ## License
-
 [Apache 2.0 License](LICENSE)
