@@ -16,7 +16,7 @@ def test_param__call():
     assert data[0] == '1'
 
 
-def test_resolve_value():
+def test_resolve__value():
     data = []
 
     def actor(a, b, c, func_a, func_b):

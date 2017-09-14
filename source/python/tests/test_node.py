@@ -12,14 +12,14 @@ def new_node(name: str, callable):
     return node.Node(sess, name, callable)
 
 
-def test_on__error_without_empty_name():
+def test_on__error_on_empty_name():
     node = new_node('A', lambda: None)
     with pytest.raises(errors.E2CNodeError) as info:
         node.on('', new_node('test', lambda: None))
     assert str(info.value) == 'Channel name cannot be None or empty!'
 
 
-def test_on__error_without_none_name():
+def test_on__error_on_none_name():
     node = new_node('A', lambda: None)
     with pytest.raises(errors.E2CNodeError) as info:
         node.on(None, new_node('test', lambda: None))

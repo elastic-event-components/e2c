@@ -33,6 +33,7 @@ def test_analyse__error_on_actor_not_callable():
         sess.analyse()
     assert str(info.value) == 'Actor A is not a callable function!'
 
+
 def test_analyse__quite():
     sess = session.Session()
     sess.actor('A', lambda: None)
@@ -74,34 +75,77 @@ def test_visualize__create():
         os.path.join(folder, 'default.pdf'))
 
 
-def test_parse_graph__error_without_graph():
+def test_parse_graph__error_on_empty_graph():
     with pytest.raises(errors.E2CParserError) as info:
         session.Session(['', ])
     assert str(info.value) == 'No data to parse!'
 
 
-def test_parse_graph__error_missing_double_line():
+def test_parse_graph__error_on_missing_double_line():
     with pytest.raises(errors.E2CParserError) as info:
         session.Session(['.run', ''])
     assert str(info.value) == 'Missing -- in line 1!'
 
 
-def test_parse_graph__error_missing_target():
+def test_parse_graph__error_on_missing_target():
     with pytest.raises(errors.E2CParserError) as info:
         session.Session(['.run --', ''])
     assert str(info.value) == 'Missing actor in line 1!'
 
 
-def test_load_graph__error_invalid_filename():
+def test_load_graph__error_on_invalid_filename():
     sess = session.Session()
     with pytest.raises(errors.E2CSessionError):
         sess.load_graph('graph/xx.e2c')
 
 
+def test_run__raise_exception():
+    config = (
+        '.run -- A',)
+
+    def raise_error():
+        raise Exception('Invalid operation')
+
+    sess = session.Session(config)
+    sess.actor('A', raise_error)
+    with pytest.raises(Exception) as info:
+        sess.run()
+    assert str(info.value) == 'Invalid operation'
+
+
+def test_run__raise_exception_catch_node():
+    config = (
+        '.err -- error',
+        '.run -- A')
+
+    def raise_error():
+        raise Exception('Invalid operation')
+
+    def error_handler():
+        error['error'] = 1
+
+    error = {}
+    sess = session.Session(config)
+    sess.actor('A', raise_error)
+    sess.actor('error', error_handler)
+    sess.run()
+
+    assert error
+
+
 def test_run():
+    # class method as actor
+    class Dummy():
+        def operation(self, value, out):
+            out(value + 5)
+
+    # function as actor
+    def operation(value, out):
+        out(value * 2)
+
     sess = session.Session()
-    sess.actor('A', lambda value, out: out(value + 5))
-    sess.actor('B', lambda value, out: out(value * 2))
+    sess.actor('A', Dummy().operation)
+    sess.actor('B', operation)
     sess.load_graph(get_graph_file('t1.e2c'))
     assert sess.run(3) == 16
     assert sess.run(3, actor="A") == 16
@@ -109,7 +153,7 @@ def test_run():
     assert sess.run(2, actor="A") == 14
 
 
-def test_run__invalid_start_actor():
+def test_run__error_on_invalid_start_actor():
     sess = session.Session()
     sess.actor('A', lambda value, out: None)
     sess.actor('B', lambda value, out: None)
@@ -143,11 +187,12 @@ def test_run__call_trace():
     sess.run(None)
     assert data == ['A', 'B']
 
+
 def test_run_continues():
     data = []
     sess = session.Session()
-    sess.actor('A', lambda value, out: out(value+1))
-    sess.actor('B', lambda value, out: out(value*3))
+    sess.actor('A', lambda value, out: out(value + 1))
+    sess.actor('B', lambda value, out: out(value * 3))
     sess.load_graph(get_graph_file('t4.e2c'))
 
     sess.run_continues(3, lambda value: data.append(value))

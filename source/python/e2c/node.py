@@ -4,7 +4,7 @@ from . import errors
 
 
 class Node(object):
-    def __init__(self, session, name: str, callable: Callable) -> None:
+    def __init__(self, session, name: str, callable: Callable or None) -> None:
         self.name = name
         self.session = session
         self.callable = callable

@@ -28,9 +28,6 @@ class Result(object):
         else:
             self.value = data
 
-    def sync(self):
-        return self.value
-
 
 class Session(Generic[Request, Response]):
     def __init__(self, config_list: List[str] = None):
@@ -81,9 +78,11 @@ class Session(Generic[Request, Response]):
         for actor_name, output_node in self._actors.items():
             if not quiet:
                 print('\t', actor_name)
+
             if not output_node.callable:
                 raise errors.E2CSessionError(
                     'Actor {} has no callable function!'.format(actor_name))
+
             if not hasattr(output_node.callable, '__call__'):
                 raise errors.E2CSessionError(
                     'Actor {} is not a callable function!'.format(actor_name))
