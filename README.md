@@ -20,6 +20,7 @@ $ python
 
 ```python
 >>> import e2c
+
 >>> config = (
 ... '.run -- action',
 ... 'action.render -- render',
@@ -35,7 +36,7 @@ $ python
 >>> sess.actor('action', action)
 >>> sess.actor('render', lambda dat, out: out(dat))
 >>> sess.actor('log', lambda dat, store: store(dat))
->>>
+
 >>> sess.run_continues('Hello E2C!', print)
 Hello e2c!
 Render done!
