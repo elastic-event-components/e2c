@@ -2,7 +2,7 @@
   <img src="https://github.com/enterstry/e2c/blob/master/images/e2c-logo.png"><br><br>
 </div>
 
-# E2C - Elastic Event Components
+# Python-E2C - Elastic Event Components for Python
 
 **Elastic Event Components** is an open source software library to build flexible component using
 function flow graphs. The graph nodes represent any operations, while
@@ -12,11 +12,6 @@ the flow between nodes. Elastic Event Components also includes flow visualizatio
 ## Installation
 *See [Installing E2C](https://github.com/enterstry/e2c/blob/master/INSTALL.md) for instructions 
 on how to build from source.*
-
-
-<div align="center">
-  <img src="https://github.com/enterstry/e2c/blob/master/images/quickstart.png"><br><br>
-</div>
 
 
 ## For more information
