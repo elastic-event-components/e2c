@@ -15,18 +15,31 @@
 # ==============================================================================
 
 
-
-class E2CSessionError(Exception):
+class E2CAnalyserError(Exception):
+    """ The error class to raise exceptions in :class:`e2c.analyser.Analyser`
+    """
     pass
 
 
-class E2CNodeError(Exception):
+class E2CSessionError(Exception):
+    """ The error class to raise exceptions in :class:`e2c.session.Session`
+    """
+    pass
+
+
+class E2CActorError(Exception):
+    """ The error class to raise exceptions in :class:`e2c.actor.Actor`
+    """
     pass
 
 
 class E2CVisualizeError(Exception):
+    """ The error class to raise exceptions in :type:`e2c.visualizer.Visualizer`
+    """
     pass
 
 
 class E2CParserError(Exception):
+    """ The error class to raise exceptions in :class:`e2c.parser.Parser`
+    """
     pass

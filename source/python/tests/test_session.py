@@ -34,26 +34,30 @@ def get_temp_folder():
     return dir
 
 
-def test_analyse__error_on_no_actor():
-    sess = session.Session()
-    sess.actor('A', None)
-    with pytest.raises(errors.E2CSessionError) as info:
-        sess.analyse()
-    assert str(info.value) == 'Actor A has no callable function!'
+def test_analyse():
+    class MockAnalyser(object):
+        def run(self, quiet=True):
+            self.quiet = quiet
+
+    mockup = MockAnalyser()
+    sess = session.BaseSession({}, mockup, None, None, None)
+    sess.name = "test"
+    sess.analyse(quiet=True)
+    assert mockup.quiet == True
 
 
-def test_analyse__error_on_actor_not_callable():
-    sess = session.Session()
-    sess.actor('A', "function")
-    with pytest.raises(errors.E2CSessionError) as info:
-        sess.analyse()
-    assert str(info.value) == 'Actor A is not a callable function!'
+def test_visualize():
+    class MockVisualizer(object):
+        def run(self, folder: str, name: str):
+            self.folder = folder
+            self.name = name
 
-
-def test_analyse__quite():
-    sess = session.Session()
-    sess.actor('A', lambda: None)
-    sess.analyse(False)
+    mockup = MockVisualizer()
+    sess = session.BaseSession({}, None, None, mockup, None)
+    sess.name = "test"
+    sess.visualize('test_folder')
+    assert mockup.folder == 'test_folder'
+    assert mockup.name == sess.name
 
 
 def test_actor__error_on_double_name():
@@ -62,33 +66,6 @@ def test_actor__error_on_double_name():
     with pytest.raises(errors.E2CSessionError) as info:
         sess.actor('A', lambda: None)
     assert str(info.value) == 'Actor A was already registered!'
-
-
-def test_visualize__error_on_no_configuration():
-    sess = session.Session()
-    sess.actor('A', lambda: None)
-    folder = get_temp_folder()
-    with pytest.raises(errors.E2CVisualizeError) as info:
-        sess.visualize(folder)
-    assert str(info.value) == 'Graph is empty!'
-
-
-def test_visualize__create():
-    config = (
-        '.trace -- trace',
-        '.err -- error',
-        '.run -- A',
-        'A.a -- .out',
-        'A.a -- B')
-
-    sess = session.Session(config)
-    sess.actor('A', lambda a: None)
-    sess.actor('B', lambda: None)
-    folder = get_temp_folder()
-    sess.visualize(folder)
-
-    assert os.path.exists(
-        os.path.join(folder, 'default.pdf'))
 
 
 def test_parse_graph__error_on_empty_graph():
@@ -128,8 +105,20 @@ def test_run__raise_exception():
         sess.run()
     assert str(info.value) == 'Invalid operation'
 
+def test_run__raise_exception_missing_run():
+    config = (
+        '.trace -- trace',)
 
-def test_run__raise_exception_catch_node():
+    def trace(name:str):
+        pass
+
+    sess = session.Session(config)
+    sess.actor('trace', trace)
+    with pytest.raises(Exception) as info:
+        sess.run()
+    assert str(info.value) == 'Missing .run -- ? in graph!'
+
+def test_run__raise_exception_catch_actor():
     config = (
         '.err -- error',
         '.run -- A')
@@ -202,7 +191,6 @@ def test_run__call_trace():
 
     sess.run(None)
     assert data == ['A', 'B']
-
 
 def test_run_continues():
     data = []

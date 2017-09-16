@@ -18,63 +18,63 @@ from typing import cast, Any, List, Dict
 
 import pytest
 from e2c import errors
-from e2c import node
+from e2c import actor
 from e2c import resolve
 from e2c import session
 
 
-def new_node(name: str, callable):
+def new_actor(name: str, callable):
     sess = session.Session()
-    return node.Node(sess, name, callable)
+    return actor.Actor(sess, name, callable)
 
 
 def test_on__error_on_empty_name():
-    node = new_node('A', lambda: None)
-    with pytest.raises(errors.E2CNodeError) as info:
-        node.on('', new_node('test', lambda: None))
+    actor = new_actor('A', lambda: None)
+    with pytest.raises(errors.E2CActorError) as info:
+        actor.on('', new_actor('test', lambda: None))
     assert str(info.value) == 'Channel name cannot be None or empty!'
 
 
 def test_on__error_on_none_name():
-    node = new_node('A', lambda: None)
-    with pytest.raises(errors.E2CNodeError) as info:
-        node.on(None, new_node('test', lambda: None))
+    actor = new_actor('A', lambda: None)
+    with pytest.raises(errors.E2CActorError) as info:
+        actor.on(None, new_actor('test', lambda: None))
     assert str(info.value) == 'Channel name cannot be None or empty!'
 
 
 def test_name():
-    node = new_node('A', lambda: None)
-    assert node.name == 'A'
+    actor = new_actor('A', lambda: None)
+    assert actor.name == 'A'
 
 
 def test_on__double_name():
-    node = new_node('A', lambda: None)
-    child_node1 = new_node('B', lambda: None)
-    child_node2 = new_node('C', lambda: None)
-    node.on('B', child_node1)
-    node.on('B', child_node2)
-    assert len(node.nodes.keys()) == 1
-    assert len(node.nodes['B']) == 2
+    actor = new_actor('A', lambda: None)
+    child_actor1 = new_actor('B', lambda: None)
+    child_actor2 = new_actor('C', lambda: None)
+    actor.on('B', child_actor1)
+    actor.on('B', child_actor2)
+    assert len(actor.actors.keys()) == 1
+    assert len(actor.actors['B']) == 2
 
 
 def test_run__error_on_none_callable():
-    node = new_node('A', None)
-    with pytest.raises(errors.E2CNodeError) as info:
-        node.run()
-    assert str(info.value) == 'Node A has no callable function!'
+    actor = new_actor('A', None)
+    with pytest.raises(errors.E2CActorError) as info:
+        actor.run()
+    assert str(info.value) == 'Actor A has no callable function!'
 
 
 def test_run__call_actor():
     result = []
-    node = new_node('A', lambda x: result.append(x))
+    actor = new_actor('A', lambda x: result.append(x))
 
-    assert node.run(1) == None
+    assert actor.run(1) == None
     assert result[0] == 1
 
 
 def test_run__call_lambda_actor():
     result = []
-    a = new_node('A', lambda x: result.append(x)).run(1)
+    a = new_actor('A', lambda x: result.append(x)).run(1)
 
     assert result[0] == 1
 
@@ -84,7 +84,7 @@ def test_run__call_function_actor():
         result.append(a)
 
     result = []
-    new_node('A', actor).run(1)
+    new_actor('A', actor).run(1)
 
     assert result[0] == 1
 
@@ -97,13 +97,13 @@ def test_run__inject_actor():
         pass
 
     result = []
-    root = new_node('A', actor_a)
-    root.on('a', new_node('a', actor_b))
+    root = new_actor('A', actor_a)
+    root.on('a', new_actor('a', actor_b))
     root.run()
 
     assert isinstance(result[0], resolve.Param)
     param = cast(resolve.Param, result[0])
-    assert isinstance(param.node.callable, type(actor_b))
+    assert isinstance(param.actor.callable, type(actor_b))
 
 
 def test_run_with_params_inject_actor():
@@ -111,9 +111,9 @@ def test_run_with_params_inject_actor():
         result.append([a, b, c])
 
     result = []
-    node = new_node('A', actor)
+    actor = new_actor('A', actor)
     params = [1, True, 'dat']
-    node.run_with_params(*params)
+    actor.run_with_params(*params)
 
     assert result[0] == [1, True, 'dat']
 
@@ -122,7 +122,7 @@ def test_spec():
     def actor(a, b: str, c: int, d: bool, e: float, f: List, g: Dict):
         pass
 
-    params = new_node('A', actor).specs
+    params = new_actor('A', actor).specs
 
     assert len(params) == 7
     assert params['a'] == Any
@@ -138,15 +138,15 @@ def test_clone():
     def actor():
         pass
 
-    cln = new_node('A', actor)
-    cln.on('B', new_node('B', actor))
-    cln.on('C', new_node('C', actor))
+    cln = new_actor('A', actor)
+    cln.on('B', new_actor('B', actor))
+    cln.on('C', new_actor('C', actor))
     clone = cln.clone()
 
     assert clone.name == 'A'
     assert clone.callable == actor
-    assert len(clone.nodes) == 2
+    assert len(clone.actors) == 2
 
-    assert len(clone.nodes['B']) == 1
-    assert clone.nodes['B'][0].callable == actor
-    assert clone.nodes['C'][0].callable == actor
+    assert len(clone.actors['B']) == 1
+    assert clone.actors['B'][0].callable == actor
+    assert clone.actors['C'][0].callable == actor
