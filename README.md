@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://github.com/enterstry/e2c/blob/master/images/e2c-logo.png"><br><br>
+  <img src="https://github.com/elastic-event-components/e2c/blob/master/images/e2c-logo.png"><br><br>
 </div>
 
 # E2C - Elastic Event Components
@@ -10,7 +10,7 @@ the graph edges represent the function parameters that build
 the flow between nodes. Elastic Event Components also includes flow visualization.
 
 ## Installation
-*See [Installing E2C](https://github.com/enterstry/e2c/blob/master/INSTALL.md) for instructions 
+*See [Installing E2C](https://github.com/elastic-event-components/e2c/blob/master/INSTALL.md) for instructions 
 on how to build from source.*
 
 #### *Try your first E2C program*
@@ -43,7 +43,7 @@ Render done!
 ```
 
 <div align="center">
-  <img src="https://github.com/enterstry/e2c/blob/master/images/quickstart.png"><br><br>
+  <img src="https://github.com/elastic-event-components/e2c/blob/master/images/quickstart.png"><br><br>
 </div>
 
 
