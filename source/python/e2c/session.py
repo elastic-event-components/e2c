@@ -291,7 +291,7 @@ class Session(BaseSession):
         visualizer = Visualizer(actors)
         parser = Parser(actors, lambda name: Actor(self, name, None))
 
-        super().__init__(
+        super(Session, self).__init__(
             actors,
             analyser,
             parser,
