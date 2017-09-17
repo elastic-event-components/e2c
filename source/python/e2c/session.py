@@ -210,7 +210,7 @@ class BaseSession(Generic[Request, Response]):
 
     def parse_graph(self, script: List[str]) -> None:
         """
-        Parse the lines and build the graph.
+        Parse the script and build the graph.
 
         :type script: List[str]
         :param script: The string list to read from.
