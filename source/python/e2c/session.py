@@ -19,13 +19,14 @@ from typing import \
     Generic, \
     Dict, \
     List, \
+    Tuple, \
     TypeVar
 
 from . import const
 from . import errors
-from .analyser import Analyser
 from .actor import Actor
-from .resolve import Param
+from .analyser import Analyser
+# from .resolve import Callable
 from .parser import Parser
 from .visualizer import Visualizer
 
@@ -83,10 +84,10 @@ class BaseSession(Generic[Request, Response]):
         :type script: List[str]
         :param script: The string list of the graph.
         """
+        self.name = const.DEFAULT
         self._analyser = analyser
         self._parser = parser
         self._visualizer = visualiser
-        self.name = const.DEFAULT
         self._result = Result()
         self._tracer = None
         self._end = None
@@ -99,27 +100,27 @@ class BaseSession(Generic[Request, Response]):
 
     def _process(
             self,
-            request:Request,
-            run:Param,
-            end:Param=None,
-            err:Param=None,
-            trace:Param=None) -> None:
+            request: Request,
+            run: Callable,
+            end: Callable = None,
+            err: Callable = None,
+            trace: Callable = None) -> None:
         """
         The method to start the first actor after call 'run'.
 
         :type request: 'Request'
         :param request: The requested data.
 
-        :type run: Param
+        :type run: Callable
         :param run: The callable param of the first actor.
 
-        :type end: Param
+        :type end: Callable
         :param end: The callable param of the last actor.
 
-        :type err: Param
+        :type err: Callable
         :param err: The callable param for errors.
 
-        :type trace: Param
+        :type trace: Callable
         :param trace: The callable param for the tracer.
 
         :rtype: None
@@ -135,7 +136,7 @@ class BaseSession(Generic[Request, Response]):
             if not err: raise exc
             err(exc)
 
-    def on_trace(self, name:str) -> None:
+    def on_trace(self, name: str) -> None:
         """
         The trace method.
 
@@ -217,6 +218,7 @@ class BaseSession(Generic[Request, Response]):
 
         :rtype: None
         """
+
         def set_name(name: str) -> None:
             self.name = name
 
@@ -246,8 +248,8 @@ class BaseSession(Generic[Request, Response]):
             runner.actors[const.RUN].clear()
             runner.on(const.RUN, self._actors[actor])
             runner.run(request)
-        if self._end and self._end.actor:
-            self._end.actor.run(request)
+        if self._end and self._end._actor:
+            self._end._actor.run(request)
         return self._result.value
 
     def run_continues(
@@ -271,14 +273,14 @@ class BaseSession(Generic[Request, Response]):
         self.run(request, actor)
 
 
-class Session(BaseSession):
+class Session(BaseSession[Request, Response], Generic[Request, Response]):
     """
     A class for running E2C operations.
     A `Session` object encapsulates the environment in which `Actor`
     objects are executed.
     """
 
-    def __init__(self, script: List[str] = None):
+    def __init__(self, script: List[str] or Tuple[str] = None):
         """
         A class for running E2C operations.
 

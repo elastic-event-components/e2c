@@ -16,49 +16,15 @@
 
 
 from typing import \
-    Generic, \
-    TypeVar, \
     List
 
-Response = TypeVar('Response')
+from .actor import Actor
+from .callable import Callable
 
 
-class Param(Generic[Response]):
-    """ A wrapper around a callable function.
+def resolve(actor: Actor, values: List) -> List[object]:
     """
-
-    def __init__(self, actor: 'Actor', continues: List['Actor']) -> None:
-        """
-        A wrapper around a callable function.
-
-        :type actor: :class:`e2c.actor.Actor`
-        :param actor: The actor.
-
-         :type continues: :class:`List[e2c.actor.Actor]`
-        :param continues: The related actors.
-        """
-        self.actor = actor
-        self.continues = continues
-
-    def __call__(self, *args, **kwargs):
-        """
-        The function to make :class:`Param` callable.
-
-        :param args: The arguments.
-        :param kwargs: The kwargs.
-        :rtype: object
-        :return: The result of the callable function.
-        """
-        params = resolve(self.actor, list(args))
-        result = self.actor.run_with_params(*params)
-        for continues_actor in self.continues:
-            continues_actor.run(*args)
-        return result
-
-
-def resolve(actor: 'Actor', values: List) -> List[Param]:
-    """
-    The function to get a list of :class:`Param` for
+    The function to get a list of :class:`Callable` for
     each parameter in callable function in specified actor.
 
     :type actor: Actor
@@ -67,17 +33,18 @@ def resolve(actor: 'Actor', values: List) -> List[Param]:
     :type values: List
     :param values: A list of values to add to the result.
 
-    :rtype: List[Param]
+    :rtype: List[Callable]
     :return: A list of parameters to call the function within class :class:`Actor`.
     """
     params: List = []
-    for param_name in actor.specs:
+    for param_name, param_type in actor.specs.items():
         actors = actor.actors.get(param_name)
         input_actor = actors[0] if actors else None
         if not input_actor and values:
             params.append(values.pop(0))
         elif input_actor:
-            param = Param(input_actor, actors[1:])
+            # ignore first actor.
+            param = Callable(input_actor, actors[1:])
             params.append(param)
         else:
             params.append(None)

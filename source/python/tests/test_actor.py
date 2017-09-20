@@ -19,13 +19,13 @@ from typing import cast, Any, List, Dict
 import pytest
 from e2c import errors
 from e2c import actor
-from e2c import resolve
+from e2c import callable
 from e2c import session
 
 
-def new_actor(name: str, callable):
+def new_actor(name: str, callable_obj):
     sess = session.Session()
-    return actor.Actor(sess, name, callable)
+    return actor.Actor(sess, name, callable_obj)
 
 
 def test_on__error_on_empty_name():
@@ -101,9 +101,9 @@ def test_run__inject_actor():
     root.on('a', new_actor('a', actor_b))
     root.run()
 
-    assert isinstance(result[0], resolve.Param)
-    param = cast(resolve.Param, result[0])
-    assert isinstance(param.actor.callable, type(actor_b))
+    assert isinstance(result[0], callable.Callable)
+    param = cast(callable.Callable, result[0])
+    assert isinstance(param._actor.callable, type(actor_b))
 
 
 def test_run_with_params_inject_actor():

@@ -23,12 +23,13 @@ config = (
     'action.render -- render',
     '   render.out -- .out',
     'action.log -- log',
-    '   log.store -- .out',
-)
+    '   log.store -- .out')
 
-def action(data: str, render, log):
+
+def action(data: str, render: Callable[[str], None], log:Callable[[str], None]):
     render(data)
     log('render done!')
+
 
 sess = e2c.Session(config)
 sess.actor('action', action)

@@ -55,11 +55,11 @@ class Analyser(object):
                 raise errors.E2CAnalyserError(
                     'Actor {} is not a callable function!'.format(actor_name))
 
-            for output_channel, actors in output_actor.actors.items():
+            for output_parameter, actors in output_actor.actors.items():
                 for input_actor in actors:
                     if not quiet:
-                        print('\t\t', (output_channel, input_actor.name))
-                    if not output_channel in output_actor.specs:
+                        print('\t\t', (output_parameter, input_actor.name))
+                    if not output_parameter in output_actor.specs:
                         raise errors.E2CAnalyserError(
                             '{} on actor {} is not a parameter in the callable function!'.format(
-                                output_channel, actor_name))
+                                output_parameter, actor_name))

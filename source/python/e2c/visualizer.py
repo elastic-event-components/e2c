@@ -41,7 +41,7 @@ class Visualizer(object):
 
     def run(self, folder: str, name: str):
         """
-        Start the analysing.
+        Start the visualizing.
 
         :type folder: str
         :param folder: The folder to store the output.
@@ -57,23 +57,23 @@ class Visualizer(object):
 
         dot = Digraph(comment=name, graph_attr=graph_attr, node_attr=actor_attr, edge_attr=edge_attr)
         any_actor = False
-        for output_name, output_actor in self._actors.items():
-            for output_channel, inputs in output_actor.actors.items():
+        for left_actor_name, left_actor in self._actors.items():
+            for left_param, right_actors in left_actor.actors.items():
 
                 any_actor = True
-                if output_name == const.SELF:
-                    dot.node(output_name, None, {'color': 'orange'})
-                for input_actor in inputs:
-                    if input_actor.name == const.OUT:
-                        dot.node(input_actor.name, None, {'color': 'orange'})
+                if left_actor_name == const.SELF:
+                    dot.node(left_actor_name, None, {'color': 'orange'})
+                for relation_actor in right_actors:
+                    if relation_actor.name == const.OUT:
+                        dot.node(relation_actor.name, None, {'color': 'orange'})
 
                     edge_attr = {}
-                    if output_channel == 'err':
+                    if left_param == 'err':
                         edge_attr = {'color': 'red', 'fontcolor': 'red'}
-                    elif output_channel == 'trace':
+                    elif left_param == 'trace':
                         edge_attr = {'color': 'darkorchid1', 'fontcolor': 'darkorchid1'}
 
-                    dot.edge(output_name, input_actor.name, label=output_channel, _attributes=edge_attr)
+                    dot.edge(left_actor_name, relation_actor.name, label=left_param, _attributes=edge_attr)
 
         if not any_actor:
             raise errors.E2CVisualizeError('Graph is empty!')

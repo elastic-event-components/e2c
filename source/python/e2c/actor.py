@@ -50,26 +50,26 @@ class Actor(object):
         self.session = session
         self.callable = callable
         self.actors: Dict[str, List['Actor']] = {}
-        self._specs = []
+        self._specs: Dict[str, type] = {}
 
-    def on(self, channel: str, actor: 'Actor') -> None:
+    def on(self, name: str, actor: 'Actor') -> None:
         """
         Method to register the given actor under specified channel.
 
-        :type channel: str
-        :param channel: The name to register the actor in this actor.
+        :type name: str
+        :param name: The name to register the actor in this actor.
 
         :type actor: Actor
         :param actor: An instance of the actor to register.
 
         :rtype: None
         """
-        if not channel:
+        if not name:
             raise errors.E2CActorError(
                 'Channel name cannot be None or empty!')
-        if not channel in self.actors:
-            self.actors[channel] = []
-        self.actors[channel].append(actor)
+        if not name in self.actors:
+            self.actors[name] = []
+        self.actors[name].append(actor)
 
     def run(self, *args) -> object:
         """
@@ -83,7 +83,7 @@ class Actor(object):
         """
         from .resolve import resolve
         params = resolve(self, [*args])
-        if self.session.on_trace and self.session.activate_trace:
+        if self.session.activate_trace:
             self.session.on_trace(self.name)
         if not self.callable:
             raise errors.E2CActorError(
@@ -94,13 +94,13 @@ class Actor(object):
         """
         Run the callable function with specified parameters.
 
-        :type params: List[Param]
+        :type params: List[Callable]
         :param params: A list of parameters
 
         :rtype: object
         :return: The result of the callable function.
         """
-        if self.session.on_trace and self.session.activate_trace:
+        if self.session.activate_trace:
             self.session.on_trace(self.name)
         return self.callable(*params)
 
@@ -111,14 +111,14 @@ class Actor(object):
         :rtype: `Actor`
         :return: The flat clone of that actor.
         """
-        actor = Actor(self.session, self.name, self.callable)
+        c_actor = Actor(self.session, self.name, self.callable)
         for name, actors in self.actors.items():
-            for n in actors:
-                actor.on(name, n)
-        return actor
+            for actor in actors:
+                c_actor.on(name, actor)
+        return c_actor
 
     @property
-    def specs(self) -> Dict[str, str]:
+    def specs(self) -> Dict[str, type]:
         """
         Getter property to get the introspection parameter
         of the internal callable function.

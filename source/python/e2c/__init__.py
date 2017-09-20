@@ -16,5 +16,6 @@
 
 
 from .session import Session
+from .callable import Callable
 
-__all__ = [Session]
+__all__ = [Session, Callable]

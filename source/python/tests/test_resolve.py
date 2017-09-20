@@ -15,8 +15,9 @@
 # ==============================================================================
 
 from e2c import actor
-from e2c import resolve
+from e2c import callable
 from e2c import session
+from e2c import resolve
 
 
 def new_actor(name: str, callable):
@@ -27,7 +28,7 @@ def new_actor(name: str, callable):
 def test_param__call():
     data = []
     actor = new_actor('A', lambda: data.append('1'))
-    param = resolve.Param(actor, [])
+    param = callable.Callable(actor, [])
     param()
     assert data[0] == '1'
 

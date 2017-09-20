@@ -74,16 +74,17 @@ class Parser(object):
                 raise errors.E2CParserError(
                     'Missing {} in line {}!'.format(const.EDGE, index))
 
-            output, input_name = line.split(const.EDGE)
-            if not input_name:
+            left_actor_name_and_param, right_actor_name = line.split(const.EDGE)
+            if not right_actor_name:
                 raise errors.E2CParserError(
                     'Missing actor in line {}!'.format(index))
 
-            output_name, output_channel = output.split('.', 1)
-            output_name = output_name or const.SELF
+            left_actor, left_param = left_actor_name_and_param.split('.', 1)
+            left_actor = left_actor or const.SELF
 
-            if input_name not in self._actors:
-                self._actors[input_name] = self._create_actor(input_name)
+            if right_actor_name not in self._actors:
+                self._actors[right_actor_name] = \
+                    self._create_actor(right_actor_name)
 
-            self._actors[output_name].on(
-                output_channel, self._actors[input_name])
+            self._actors[left_actor].on(
+                left_param, self._actors[right_actor_name])
