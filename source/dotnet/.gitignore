@@ -1,0 +1,10 @@
+bin/
+obj/
+unversioned/
+test-results/*.user
+
+*.cache
+*.suo
+*.userprefs
+
+.DS_Store

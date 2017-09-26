@@ -1,0 +1,11 @@
+
+// A comment!
+
+[test-app]
+
+.run -- A
+
+    A.output -- B // A other comment!
+        B.output -- .out
+
+
