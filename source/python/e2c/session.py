@@ -26,7 +26,6 @@ from . import const
 from . import errors
 from .actor import Actor
 from .analyser import Analyser
-# from .resolve import Callable
 from .parser import Parser
 from .visualizer import Visualizer
 
@@ -35,7 +34,7 @@ Response = TypeVar('Response')
 
 
 class Result(object):
-    """ The result object.
+    """ The result class to represents the result.
     """
 
     def __init__(self):
@@ -44,7 +43,7 @@ class Result(object):
 
     def set(self, data: object) -> None:
         """
-        Method to set the value.
+        The method to set the value.
 
         :type data: object
         :param data: Any data.
@@ -57,7 +56,8 @@ class Result(object):
 
 
 class BaseSession(Generic[Request, Response]):
-    """ The core session brings the components together.
+    """ 
+    The core session brings all components together.
     """
 
     def __init__(self,
@@ -82,7 +82,7 @@ class BaseSession(Generic[Request, Response]):
         :param visualiser: A instance of the visualiser.
 
         :type script: List[str]
-        :param script: The string list of the graph.
+        :param script: The string list of the graph to parse.
         """
         self.name = const.DEFAULT
         self._analyser = analyser
@@ -109,19 +109,19 @@ class BaseSession(Generic[Request, Response]):
         The method to start the first actor after call 'run'.
 
         :type request: 'Request'
-        :param request: The requested data.
+        :param request: The data to be transmitted.
 
         :type run: Callable
-        :param run: The callable param of the first actor.
+        :param run: The run function.
 
         :type end: Callable
-        :param end: The callable param of the last actor.
+        :param end: The end function.
 
         :type err: Callable
-        :param err: The callable param for errors.
+        :param err: The error function.
 
         :type trace: Callable
-        :param trace: The callable param for the tracer.
+        :param trace: The trace function.
 
         :rtype: None
         """
@@ -138,10 +138,10 @@ class BaseSession(Generic[Request, Response]):
 
     def on_trace(self, name: str) -> None:
         """
-        The trace method.
+        The method to track the trace path.
 
         :type name: str
-        :param name: The name of the actor to trace.
+        :param name: The name of the running actor.
         :rtype: None
         """
         if self._tracer:
@@ -156,10 +156,10 @@ class BaseSession(Generic[Request, Response]):
 
     def actor(self, name: str, callable: Callable) -> None:
         """
-        Register a new actor by specified name and the callable function or method or class.
+        Registers a new actor by specified name and the callable function or method or class.
 
         :type name: str
-        :param name: The name under that is the callable registered.
+        :param name: The name under which the function can be called..
 
         :type callable: Callable
         :param callable: The callable function or method or class.
@@ -175,7 +175,7 @@ class BaseSession(Generic[Request, Response]):
 
     def analyse(self, quiet=True) -> None:
         """
-        Start the analyser.
+        Starts the analyser.
 
         :type quiet: bool
         :param quiet: True to print out messages.
@@ -185,10 +185,10 @@ class BaseSession(Generic[Request, Response]):
 
     def visualize(self, folder: str = None) -> None:
         """
-        Start the visualiser.
+        Starts the visualiser.
 
         :type folder: str
-        :param folder: The path to generate the visual graph.
+        :param folder: The directory where the graph is written.
 
         :rtype: None
         """
@@ -196,10 +196,10 @@ class BaseSession(Generic[Request, Response]):
 
     def load_graph(self, file_name: str) -> None:
         """
-        Open file and read and build the graph.
+        Opens the specified file and builds up the graph.
 
         :type  file_name: str
-        :param file_name: The filename to load from.
+        :param file_name: The filename to load from file.
 
         :rtype: None
         """
@@ -210,11 +210,11 @@ class BaseSession(Generic[Request, Response]):
             raise errors.E2CSessionError(exc)
 
     def parse_graph(self, script: List[str]) -> None:
-        """
-        Parse the script and build the graph.
+        """ 
+        Parses the script and builds the graph.
 
         :type script: List[str]
-        :param script: The string list to read from.
+        :param script: The script to parse.
 
         :rtype: None
         """
@@ -226,16 +226,16 @@ class BaseSession(Generic[Request, Response]):
 
     def run(self, request: Request = None, actor: str = None) -> Response:
         """
-        Run the graph and returns a return value.
+        Runs the graph and returns the return value.
 
         :type request: Request
-        :param request: The requested data
+        :param request: The data to be transmitted
 
         :type actor: str
-        :param actor: The optional start actor.
+        :param actor: The optional name of the actor to start.
 
         :rtype: Response
-        :return: The response of the data.
+        :return: The return value.
         """
         self.analyse(True)
         if not actor:
@@ -248,7 +248,7 @@ class BaseSession(Generic[Request, Response]):
             runner.actors[const.RUN].clear()
             runner.on(const.RUN, self._actors[actor])
             runner.run(request)
-        if self._end and self._end._actor:
+        if self._end:
             self._end._actor.run(request)
         return self._result.value
 
@@ -256,16 +256,16 @@ class BaseSession(Generic[Request, Response]):
             self, request: Request = None,
             result: Callable[[Response], None] = None, actor: str = None) -> None:
         """
-        Run the graph and call a result callback.
+        Runs the graph and calls a result callback.
 
         :type request: Request
-        :param request: The requested data
+        :param request: The data to be transmitted.
 
         :type result: Callable[[Response], None]
         :param result: The result callback.
 
         :type actor: str
-        :param actor: The optional start actor.
+        :param actor: The optional name of the actor to start.
 
         :rtype: None
         """
@@ -273,7 +273,7 @@ class BaseSession(Generic[Request, Response]):
         self.run(request, actor)
 
 
-class Session(BaseSession[Request, Response], Generic[Request, Response]):
+class Session(Generic[Request, Response], BaseSession[Request, Response]):
     """
     A class for running E2C operations.
     A `Session` object encapsulates the environment in which `Actor`
@@ -285,7 +285,7 @@ class Session(BaseSession[Request, Response], Generic[Request, Response]):
         A class for running E2C operations.
 
         :type script: List[str]
-        :param script: The script to build the graph.
+        :param script: The script to builds the graph.
         """
         actors: Dict[str, Actor] = {}
 

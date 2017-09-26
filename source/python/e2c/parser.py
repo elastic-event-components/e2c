@@ -34,7 +34,7 @@ class Parser(object):
         Represents a class to parse the graph and build relations between them.
 
         :type actors: :class:`Dict[str, Actor]`
-        :param actors: The list to add new actors.
+        :param actors: The list to add the handeled actors.
 
         :type create_actor: type: `Callable[[str], Actor]`
         :param create_actor: The function to build new actors.
@@ -44,7 +44,7 @@ class Parser(object):
 
     def run(self, script: List[str], out_name: Callable[[str], None]):
         """
-         Start the parsing.
+        Starts the parsing.
 
         :type script: List[str]
         :param script: The script to parse.
@@ -79,12 +79,16 @@ class Parser(object):
                 raise errors.E2CParserError(
                     'Missing actor in line {}!'.format(index))
 
-            left_actor, left_param = left_actor_name_and_param.split('.', 1)
-            left_actor = left_actor or const.SELF
+            left_actor_name, left_param = left_actor_name_and_param.split('.', 1)
+            left_actor_name = left_actor_name or const.SELF
+
+            if left_actor_name not in self._actors:
+                self._actors[left_actor_name] = \
+                    self._create_actor(left_actor_name)
 
             if right_actor_name not in self._actors:
                 self._actors[right_actor_name] = \
                     self._create_actor(right_actor_name)
 
-            self._actors[left_actor].on(
+            self._actors[left_actor_name].on(
                 left_param, self._actors[right_actor_name])

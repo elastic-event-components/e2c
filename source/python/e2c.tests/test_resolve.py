@@ -15,7 +15,7 @@
 # ==============================================================================
 
 from e2c import actor
-from e2c import callable
+from e2c import event
 from e2c import session
 from e2c import resolve
 
@@ -25,24 +25,23 @@ def new_actor(name: str, callable):
     return actor.Actor(sess, name, callable)
 
 
-def test_param__call():
+def test_event__call():
     data = []
     actor = new_actor('A', lambda: data.append('1'))
-    param = callable.Callable(actor, [])
-    param()
+    evt = event.Event(actor, [])
+    evt()
     assert data[0] == '1'
 
 
 def test_resolve__value():
-    data = []
 
     def actor(a, b, c, func_a, func_b):
-        data.append([a, b, c, func_a, func_b])
+        pass
 
     actor = new_actor('A', actor)
-    params1 = resolve.resolve(actor, [1, 'data', True])
-    params2 = resolve.resolve(actor, [])
+    result1 = resolve.resolve(actor, [1, 'data', True])
+    result2 = resolve.resolve(actor, [])
 
-    assert len(params1) == 5
-    assert params1 == [1, 'data', True, None, None]
-    assert params2 == [None, None, None, None, None]
+    assert len(result1) == 5
+    assert result1 == [1, 'data', True, None, None]
+    assert result2 == [None, None, None, None, None]

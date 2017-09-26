@@ -5,7 +5,7 @@ from setuptools import find_packages, setup
 version = 0.1
 
 install_requires = []
-with open('scripts/require.txt') as f:
+with open('e2c.scripts/require.txt') as f:
     install_requires = f.readlines()
 
 setup(

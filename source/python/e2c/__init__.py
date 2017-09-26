@@ -16,6 +16,6 @@
 
 
 from .session import Session
-from .callable import Callable
+from .event import Event
 
-__all__ = [Session, Callable]
+__all__ = [Session, Event]

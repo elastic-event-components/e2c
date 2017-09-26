@@ -36,10 +36,10 @@ class Analyser(object):
 
     def run(self, quiet=True):
         """
-        Start the analysing.
+        Starts the analysing.
 
         :type quiet: bool
-        :param quiet: True to print outputs.
+        :param quiet: False to print outputs on the command line.
 
         :rtype: None
         """

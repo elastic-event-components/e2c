@@ -19,7 +19,7 @@ from typing import cast, Any, List, Dict
 import pytest
 from e2c import errors
 from e2c import actor
-from e2c import callable
+from e2c import event
 from e2c import session
 
 
@@ -32,18 +32,21 @@ def test_on__error_on_empty_name():
     actor = new_actor('A', lambda: None)
     with pytest.raises(errors.E2CActorError) as info:
         actor.on('', new_actor('test', lambda: None))
-    assert str(info.value) == 'Channel name cannot be None or empty!'
+  
+    assert str(info.value) == 'Name cannot be None or empty!'
 
 
 def test_on__error_on_none_name():
     actor = new_actor('A', lambda: None)
     with pytest.raises(errors.E2CActorError) as info:
         actor.on(None, new_actor('test', lambda: None))
-    assert str(info.value) == 'Channel name cannot be None or empty!'
+  
+    assert str(info.value) == 'Name cannot be None or empty!'
 
 
 def test_name():
     actor = new_actor('A', lambda: None)
+
     assert actor.name == 'A'
 
 
@@ -53,6 +56,7 @@ def test_on__double_name():
     child_actor2 = new_actor('C', lambda: None)
     actor.on('B', child_actor1)
     actor.on('B', child_actor2)
+
     assert len(actor.actors.keys()) == 1
     assert len(actor.actors['B']) == 2
 
@@ -69,13 +73,6 @@ def test_run__call_actor():
     actor = new_actor('A', lambda x: result.append(x))
 
     assert actor.run(1) == None
-    assert result[0] == 1
-
-
-def test_run__call_lambda_actor():
-    result = []
-    a = new_actor('A', lambda x: result.append(x)).run(1)
-
     assert result[0] == 1
 
 
@@ -101,9 +98,9 @@ def test_run__inject_actor():
     root.on('a', new_actor('a', actor_b))
     root.run()
 
-    assert isinstance(result[0], callable.Callable)
-    param = cast(callable.Callable, result[0])
-    assert isinstance(param._actor.callable, type(actor_b))
+    assert isinstance(result[0], event.Event)
+    evt = cast(event.Event, result[0])
+    assert isinstance(evt._actor.callable, type(actor_b))
 
 
 def test_run_with_params_inject_actor():
@@ -137,7 +134,7 @@ def test_spec():
 def test_clone():
     def actor():
         pass
-
+    
     cln = new_actor('A', actor)
     cln.on('B', new_actor('B', actor))
     cln.on('C', new_actor('C', actor))

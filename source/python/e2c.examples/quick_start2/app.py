@@ -20,10 +20,10 @@ import e2c
 
 config = (
     '.run -- action',
-    'action.render -- render',
-    '   render.out -- .out',
-    'action.log -- log',
-    '   log.store -- .out')
+    '   action.render -- render',
+    '       render.out -- .out',
+    '   action.log -- log',
+    '       log.store -- .out')
 
 
 def action(data: str, render: Callable[[str], None], log:Callable[[str], None]):

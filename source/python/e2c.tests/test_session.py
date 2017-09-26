@@ -28,12 +28,6 @@ def get_graph_file(file_name):
     return os.path.join(graph_folder, file_name)
 
 
-def get_temp_folder():
-    dir = os.path.join(tempfile.gettempdir(), 'e2c')
-    os.makedirs(dir, exist_ok=True)
-    return dir
-
-
 def test_analyse():
     class MockAnalyser(object):
         def run(self, quiet=True):
@@ -41,7 +35,6 @@ def test_analyse():
 
     mockup = MockAnalyser()
     sess = session.BaseSession({}, mockup, None, None, None)
-    sess.name = "test"
     sess.analyse(quiet=True)
     assert mockup.quiet == True
 
@@ -92,7 +85,7 @@ def test_load_graph__error_on_invalid_filename():
         sess.load_graph('graph/xx.e2c')
 
 
-def test_run__raise_exception():
+def test_run__raise_custom_exception():
     config = (
         '.run -- A',)
 
@@ -105,18 +98,20 @@ def test_run__raise_exception():
         sess.run()
     assert str(info.value) == 'Invalid operation'
 
+
 def test_run__raise_exception_missing_run():
     config = (
         '.trace -- trace',)
 
-    def trace(name:str):
+    def trace(name: str):
         pass
 
     sess = session.Session(config)
     sess.actor('trace', trace)
-    with pytest.raises(Exception) as info:
+    with pytest.raises(errors.E2CSessionError) as info:
         sess.run()
     assert str(info.value) == 'Missing .run -- ? in graph!'
+
 
 def test_run__raise_exception_catch_actor():
     config = (
@@ -136,6 +131,20 @@ def test_run__raise_exception_catch_actor():
     sess.run()
 
     assert error
+
+
+def test_run__assign_before_define():
+    config = (
+        'A.out -- B',
+        '.run -- A')
+
+    data = []
+    sess = session.Session(config)
+    sess.actor('A', lambda data, out: out(data))
+    sess.actor('B', lambda d: data.append(d))
+    sess.run(1)
+
+    assert data[0] == 1
 
 
 def test_run():
@@ -191,6 +200,7 @@ def test_run__call_trace():
 
     sess.run(None)
     assert data == ['A', 'B']
+
 
 def test_run_continues():
     data = []

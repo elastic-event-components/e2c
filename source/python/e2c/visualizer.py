@@ -41,13 +41,13 @@ class Visualizer(object):
 
     def run(self, folder: str, name: str):
         """
-        Start the visualizing.
+        Starts the visualizing.
 
         :type folder: str
         :param folder: The folder to store the output.
 
         :type name: str
-        :param name: The name of the output.
+        :param name: The name of the graph.
 
         :rtype: None
         """
@@ -56,6 +56,7 @@ class Visualizer(object):
         actor_attr = {'color': 'black', 'fontcolor': 'black'}
 
         dot = Digraph(comment=name, graph_attr=graph_attr, node_attr=actor_attr, edge_attr=edge_attr)
+        dot.format = "png"
         any_actor = False
         for left_actor_name, left_actor in self._actors.items():
             for left_param, right_actors in left_actor.actors.items():
@@ -63,14 +64,15 @@ class Visualizer(object):
                 any_actor = True
                 if left_actor_name == const.SELF:
                     dot.node(left_actor_name, None, {'color': 'orange'})
+               
                 for relation_actor in right_actors:
                     if relation_actor.name == const.OUT:
                         dot.node(relation_actor.name, None, {'color': 'orange'})
 
                     edge_attr = {}
-                    if left_param == 'err':
+                    if left_param == const.ERR:
                         edge_attr = {'color': 'red', 'fontcolor': 'red'}
-                    elif left_param == 'trace':
+                    elif left_param ==  const.TRC:
                         edge_attr = {'color': 'darkorchid1', 'fontcolor': 'darkorchid1'}
 
                     dot.edge(left_actor_name, relation_actor.name, label=left_param, _attributes=edge_attr)
@@ -79,4 +81,4 @@ class Visualizer(object):
             raise errors.E2CVisualizeError('Graph is empty!')
 
         dot.render(name, folder, cleanup=True)
-        dot.save(name, directory=os.path.join(folder or '', 'dot'))
+        #dot.save(name, directory=os.path.join(folder or '', 'dot'))

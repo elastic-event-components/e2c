@@ -44,5 +44,5 @@ sess.actor('word_count', word_count)
 sess.actor('error', lambda x: print('error', x))
 sess.actor('end', lambda x: print('end'))
 
-sess.visualize('pdf')
+sess.visualize()
 sess.run_continues('data', lambda out: print(out))

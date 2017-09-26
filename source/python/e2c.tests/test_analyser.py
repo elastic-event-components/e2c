@@ -21,28 +21,30 @@ from e2c.actor import Actor
 from e2c.session import Session
 
 
-def test_analyse__error_on_no_actor():
+def test_analyser__error_on_no_actor():
     session = Session()
     analyser = Analyser({'A': Actor(session, "A", None)})
     with pytest.raises(errors.E2CAnalyserError) as info:
         analyser.run(quiet=True)
+   
     assert str(info.value) == 'Actor A has no callable function!'
 
 
-def test_analyse__error_on_actor_not_callable():
+def test_analyser__error_on_actor_not_callable():
     session = Session()
     analyser = Analyser({'A': Actor(session, "A", 'xxx')})
     with pytest.raises(errors.E2CAnalyserError) as info:
         analyser.run(quiet=False)
+  
     assert str(info.value) == 'Actor A is not a callable function!'
 
 
-def test_analyse__error_on_actor_invalid_parameter():
+def test_analyser__error_on_actor_invalid_parameter():
     session = Session()
-
     actor_a = Actor(session, "A", lambda x: None)
     actor_a.on('b', Actor(session, "B", lambda: None))
     analyser = Analyser({'A': actor_a})
     with pytest.raises(errors.E2CAnalyserError) as info:
         analyser.run(quiet=False)
+   
     assert str(info.value) == 'b on actor A is not a parameter in the callable function!'

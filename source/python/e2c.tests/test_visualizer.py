@@ -49,7 +49,7 @@ def test_run__error_on_no_configuration():
     assert str(info.value) == 'Graph is empty!'
 
 
-def test_run__create():
+def test_run__build():
     session = Session()
     actors: Dict[str, Actor] = {}
 
@@ -69,7 +69,7 @@ def test_run__create():
 
     folder = get_temp_folder()
     vis = Visualizer(actors)
-    vis.run(folder, "my_name")
+    vis.run(folder, "py-name")
 
     assert os.path.exists(
-        os.path.join(folder, 'my_name.pdf'))
+        os.path.join(folder, 'py-name.png'))

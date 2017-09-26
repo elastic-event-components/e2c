@@ -12,7 +12,7 @@ pip install wheel
 pip install pylint
 
 # install the packages
-pip install -I -r scripts/require.txt
+pip install -I -r e2c.scripts/require.txt
 
 # install e2c as package.
 

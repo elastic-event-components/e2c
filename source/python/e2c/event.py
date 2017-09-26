@@ -21,8 +21,8 @@ from typing import \
 from .actor import Actor
 
 
-class Callable(object):
-    """ A wrapper around a callable function.
+class Event(object):
+    """ A wrapper around the callable function.
     """
 
     def __init__(self, actor: Actor, continues: List[Actor]) -> None:
@@ -36,14 +36,14 @@ class Callable(object):
         :param continues: The related actors.
         """
         self._actor = actor
-        self._continues = continues
+        self._continues = continues or []
 
     def __call__(self, *args, **kwargs):
         """
         The function to make :class:`Callable` callable.
 
-        :param args: The arguments.
-        :param kwargs: The kwargs.
+        :param args: The arguments to hand over.
+        :param kwargs: The kwargs to hand over.
         :rtype: object
         :return: The result of the callable function.
         """

@@ -33,12 +33,12 @@ class Actor(object):
     A wrapper around a callable function.
     """
 
-    def __init__(self, session, name: str, callable: Callable or None) -> None:
+    def __init__(self, session: 'Session', name: str, callable: Callable or None) -> None:
         """
         A wrapper around a callable function.
 
         :type session: :class:`e2c.session.Session`
-        :param session: The Session to which the Actor belong.
+        :param session: The session to that the actor belong.
 
         :type name: str
         :param name: The name of the actor to register on the session.
@@ -54,7 +54,7 @@ class Actor(object):
 
     def on(self, name: str, actor: 'Actor') -> None:
         """
-        Method to register the given actor under specified channel.
+        Method to register the given actor under specified name.
 
         :type name: str
         :param name: The name to register the actor in this actor.
@@ -66,14 +66,14 @@ class Actor(object):
         """
         if not name:
             raise errors.E2CActorError(
-                'Channel name cannot be None or empty!')
+                'Name cannot be None or empty!')
         if not name in self.actors:
             self.actors[name] = []
         self.actors[name].append(actor)
 
     def run(self, *args) -> object:
         """
-        Run the callable function with specified arguments.
+        Runs the callable internal function with specified arguments.
 
         :type args: List[object]
         :param args: A list of arguments.
@@ -92,7 +92,7 @@ class Actor(object):
 
     def run_with_params(self, *params) -> object:
         """
-        Run the callable function with specified parameters.
+        Runs the callable internal function with specified parameters.
 
         :type params: List[Callable]
         :param params: A list of parameters
@@ -106,7 +106,7 @@ class Actor(object):
 
     def clone(self) -> 'Actor':
         """
-        Get a new instance of type `Actor`
+        Gets a new instance of type `Actor`
 
         :rtype: `Actor`
         :return: The flat clone of that actor.
@@ -124,7 +124,7 @@ class Actor(object):
         of the internal callable function.
 
         :rtype: Dict[str, type]
-        :return: A dictionary of name and type of any parameter.
+        :return: A dictionary of name and type for each parameter.
         """
         if not self._specs and self.callable:
             result = getfullargspec(self.callable)

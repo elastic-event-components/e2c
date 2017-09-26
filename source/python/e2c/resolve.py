@@ -19,22 +19,21 @@ from typing import \
     List
 
 from .actor import Actor
-from .callable import Callable
+from .event import Event
 
 
 def resolve(actor: Actor, values: List) -> List[object]:
     """
-    The function to get a list of :class:`Callable` for
-    each parameter in callable function in specified actor.
+    The function to find missing parameters.
 
     :type actor: Actor
-    :param actor: The actor with the callable function to inspect the parameters.
+    :param actor: The actor, at which the parameters are verified.
 
     :type values: List
-    :param values: A list of values to add to the result.
+    :param values: A list of values to add to the parameters on the first position.
 
     :rtype: List[Callable]
-    :return: A list of parameters to call the function within class :class:`Actor`.
+    :return: A list of parameters to run the actor.
     """
     params: List = []
     for param_name, param_type in actor.specs.items():
@@ -44,8 +43,8 @@ def resolve(actor: Actor, values: List) -> List[object]:
             params.append(values.pop(0))
         elif input_actor:
             # ignore first actor.
-            param = Callable(input_actor, actors[1:])
-            params.append(param)
+            event = Event(input_actor, actors[1:])
+            params.append(event)
         else:
             params.append(None)
     return params
