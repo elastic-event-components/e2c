@@ -35,7 +35,7 @@ sess = e2c.Session(config)
 sess.actor('action', action)
 sess.actor('render', lambda dat, out: out(dat))
 sess.actor('log', lambda dat, store: store(dat))
-sess.visualize()
 
+sess.visualize()
 sess.run_continues('Hello, E2C', print)
 

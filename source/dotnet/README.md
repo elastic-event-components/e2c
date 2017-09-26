@@ -49,9 +49,9 @@ namespace Quickstart2
             session.Actor("log", new Action<string, Output<string>>(
                 (data, store) => store.Invoke(data) ));
             
+            session.Visualize();
             session.RunContinues<string, string>(
                 "Hello, E2C", Console.WriteLine);
-            session.Visualize();
         }
     }
 }
