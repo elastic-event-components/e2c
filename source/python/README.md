@@ -39,6 +39,7 @@ $ python
 
 >>> sess.visualize()
 >>> sess.run_continues('Hello, E2C', print)
+
 Hello, E2C
 Render done!
 ```
