@@ -13,6 +13,38 @@ the flow between nodes. Elastic Event Components also includes flow visualizatio
 *See [Installing E2C](https://github.com/elastic-event-components/e2c/blob/master/INSTALL.md) for instructions 
 on how to build from source.*
 
+#### *Try your first E2C program*
+```shell
+$ python
+```
+
+```python
+>>> import e2c
+
+>>> config = (
+... '.run -- action',
+... 'action.render -- render',
+... '   render.out -- .out',
+... 'action.log -- log',
+... '   log.store -- .out')
+
+>>> def action(data: str, render, log):
+...    render(data)
+...    log('Render done!')
+
+>>> sess = e2c.Session[str, str](config)
+>>> sess.actor('action', action)
+>>> sess.actor('render', lambda dat, out: out(dat))
+>>> sess.actor('log', lambda dat, store: store(dat))
+
+>>> sess.run_continues('Hello E2C!', print)
+Hello e2c!
+Render done!
+```
+
+<div align="center">
+  <img src="https://github.com/elastic-event-components/e2c/blob/master/images/quickstart.png"><br><br>
+</div>
 
 ## For more information
 * [E2C website](http://www.elastic-event-components.org)

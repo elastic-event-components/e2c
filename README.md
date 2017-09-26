@@ -14,8 +14,6 @@ The following link explain how to install a version of E2C that enables you to w
 *See [Installing E2C](https://github.com/elastic-event-components/e2c/blob/master/INSTALL.md) for instructions 
 on how to build from source.*
 
-
-
 #### *Try your first E2C program*
 ```shell
 $ python
@@ -48,7 +46,6 @@ Render done!
 <div align="center">
   <img src="https://github.com/elastic-event-components/e2c/blob/master/images/quickstart.png"><br><br>
 </div>
-
 
 ## For more information
 * [E2C website](http://www.elastic-event-components.org)
