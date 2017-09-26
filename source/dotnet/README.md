@@ -56,7 +56,7 @@ namespace Quickstart2
     }
 }
 
-Hello e2c!
+Hello, E2C
 Render done!
 ```
 

@@ -38,8 +38,8 @@ $ python
 >>> sess.actor('log', lambda dat, store: store(dat))
 
 >>> sess.visualize()
->>> sess.run_continues('Hello E2C!', print)
-Hello e2c!
+>>> sess.run_continues('Hello, E2C', print)
+Hello, E2C
 Render done!
 ```
 
