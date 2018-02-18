@@ -1,4 +1,5 @@
 twine
 pytest
 pytest-cov
+pytest-asyncio
 graphviz

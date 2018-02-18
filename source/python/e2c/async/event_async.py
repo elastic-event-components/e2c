@@ -14,18 +14,15 @@
 # limitations under the License.
 # ==============================================================================
 
-
 from typing import \
     List
-
-from .actor import Actor
 
 
 class Event(object):
     """ A wrapper around the callable function.
     """
 
-    def __init__(self, actor: Actor, continues: List[Actor]) -> None:
+    def __init__(self, actor, continues: List) -> None:
         """
         A wrapper around a callable function.
 
@@ -38,7 +35,7 @@ class Event(object):
         self._actor = actor
         self._continues = continues or []
 
-    def __call__(self, *args, **kwargs):
+    async def __call__(self, *args, **kwargs):
         """
         The function to make :class:`Callable` callable.
 
@@ -47,9 +44,9 @@ class Event(object):
         :rtype: object
         :return: The result of the callable function.
         """
-        return self.invoke(*args)
+        return await self.invoke(*args)
 
-    def invoke(self, *args) -> object:
+    async def invoke(self, *args) -> object:
         """
         The function to call the actor.
 
@@ -57,9 +54,9 @@ class Event(object):
        :rtype: object
        :return: The result of the callable function.
        """
-        from .resolve import resolve
-        params = resolve(self._actor, list(args), self.__class__)
-        result = self._actor.run_with_params(*params)
+        from ..resolve import resolve
+        params = resolve(self._actor, list(args), Event)
+        result = await self._actor.run_with_params(*params)
         for continues_actor in self._continues:
-            continues_actor.run(*args)
+            await continues_actor.run(*args)
         return result

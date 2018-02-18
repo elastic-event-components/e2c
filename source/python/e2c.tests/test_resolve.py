@@ -39,8 +39,8 @@ def test_resolve__value():
         pass
 
     actor = new_actor('A', actor)
-    result1 = resolve.resolve(actor, [1, 'data', True])
-    result2 = resolve.resolve(actor, [])
+    result1 = resolve.resolve(actor, [1, 'data', True], event.Event)
+    result2 = resolve.resolve(actor, [], event.Event)
 
     assert len(result1) == 5
     assert result1 == [1, 'data', True, None, None]
