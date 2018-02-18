@@ -130,16 +130,16 @@ class BaseSession(Generic[Request, Response]):
 
         :rtype: None
         """
-        #try:
-        self._tracer = trace
-        self._end = end
-        if not run:
-            raise errors.E2CSessionError(
-                'Missing .{} -- ? in graph!'.format(const.RUN))
-        await run(request)
-       # except Exception as exc:
-        #    if not err: raise exc
-         #   await err(exc)
+        try:
+            self._tracer = trace
+            self._end = end
+            if not run:
+                raise errors.E2CSessionError(
+                    'Missing .{} -- ? in graph!'.format(const.RUN))
+            await run(request)
+        except Exception as exc:
+            if not err: raise exc
+            await err(exc)
 
     async def on_trace(self, name: str) -> None:
         """
