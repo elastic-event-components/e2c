@@ -14,7 +14,7 @@
 # limitations under the License.
 # ==============================================================================
 
-
+import asyncio
 from inspect import \
     getfullargspec, \
     ismethod
@@ -25,7 +25,9 @@ from typing import \
     Dict,\
     List
 
-from . import errors
+from .. import errors
+from . import event_async
+from ..resolve import resolve
 
 
 class Actor(object):
@@ -71,7 +73,7 @@ class Actor(object):
             self.actors[name] = []
         self.actors[name].append(actor)
 
-    def run(self, *args) -> object:
+    async def run(self, *args) -> object:
         """
         Runs the callable internal function with specified arguments.
 
@@ -81,17 +83,17 @@ class Actor(object):
         :rtype: object
         :return: The result of the callable function.
         """
-        from .event import Event
-        from .resolve import resolve
-        params = resolve(self, [*args], Event)
+        params = resolve(self, [*args], event_async.Event)
         if self.session.activate_trace:
-            self.session.on_trace(self.name)
+            await self.session.on_trace(self.name)
         if not self.callable:
             raise errors.E2CActorError(
                 'Actor {0} has no callable function!'.format(self.name))
+        if asyncio.iscoroutinefunction(self.callable):
+            return await self.callable(*params)
         return self.callable(*params)
 
-    def run_with_params(self, *params) -> object:
+    async def run_with_params(self, *params) -> object:
         """
         Runs the callable internal function with specified parameters.
 
@@ -102,8 +104,11 @@ class Actor(object):
         :return: The result of the callable function.
         """
         if self.session.activate_trace:
-            self.session.on_trace(self.name)
+            await self.session.on_trace(self.name)
+        if asyncio.iscoroutinefunction(self.callable):
+            return await self.callable(*params)
         return self.callable(*params)
+
 
     def clone(self) -> 'Actor':
         """

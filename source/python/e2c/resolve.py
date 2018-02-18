@@ -16,13 +16,13 @@
 
 
 from typing import \
-    List
+    List, Callable
 
 from .actor import Actor
 from .event import Event
 
 
-def resolve(actor: Actor, values: List) -> List[object]:
+def resolve(actor: Actor, values: List, eventFactory: Callable[[object, object], object]) -> List[object]:
     """
     The function to find missing parameters.
 
@@ -32,8 +32,8 @@ def resolve(actor: Actor, values: List) -> List[object]:
     :type values: List
     :param values: A list of values to add to the parameters on the first position.
 
-    :rtype: List[Callable]
-    :return: A list of parameters to run the actor.
+    :rtype: eventFactory: Callable[[object, object], object]
+    :return: The factory to create a event.
     """
     params: List = []
     for param_name, param_type in actor.specs.items():
@@ -43,7 +43,7 @@ def resolve(actor: Actor, values: List) -> List[object]:
             params.append(values.pop(0))
         elif input_actor:
             # ignore first actor.
-            event = Event(input_actor, actors[1:])
+            event = eventFactory(input_actor, actors[1:])
             params.append(event)
         else:
             params.append(None)
