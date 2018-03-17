@@ -54,8 +54,8 @@ class Result(object):
         if self.value_callback:
             if asyncio.iscoroutinefunction(self.value_callback):
                 await self.value_callback(data)
-            else:
-                self.value_callback(data)
+            #else:
+            #    self.value_callback(data)
         else:
             self.value = data
 
