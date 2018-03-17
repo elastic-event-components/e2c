@@ -38,11 +38,12 @@ def word_count(content: str, out: Callable[[str], None]):
 
 sess = e2c.Session()
 sess.load_graph('app.e2c')
-sess.actor('list_files', list_files)
-sess.actor('open_file', open_file)
-sess.actor('word_count', word_count)
-sess.actor('error', lambda x: print('error', x))
-sess.actor('end', lambda x: print('end'))
+# sess.actor('list_files', list_files)
+# sess.actor('print_out')
+# sess.actor('open_file', open_file)
+# sess.actor('word_count', word_count)
+# sess.actor('error', lambda x: print('error', x))
+# sess.actor('end', lambda x: print('end'))
 
 sess.visualize()
-sess.run_continues('data', lambda out: print(out))
+#sess.run_continues('data', lambda out: print(out))
