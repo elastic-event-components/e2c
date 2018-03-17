@@ -76,14 +76,18 @@ async def test_run__error_on_none_callable():
 @pytest.mark.asyncio
 async def test_run__call_actor():
     result = []
-    actor = new_actor('A', lambda x: result.append(x))
+
+    async def action(x):
+        result.append(x)
+
+    actor = new_actor('A', action)
 
     assert await actor.run(1) == None
     assert result[0] == 1
 
 @pytest.mark.asyncio
 async def test_run__call_function_actor():
-    def actor(a):
+    async def actor(a):
         result.append(a)
 
     result = []
@@ -93,10 +97,10 @@ async def test_run__call_function_actor():
 
 @pytest.mark.asyncio
 async def test_run__inject_actor():
-    def actor_a(a):
+    async def actor_a(a):
         result.append(a)
 
-    def actor_b():
+    async def actor_b():
         pass
 
     result = []
@@ -111,7 +115,7 @@ async def test_run__inject_actor():
 
 @pytest.mark.asyncio
 async def test_run_with_params_inject_actor():
-    def actor(a, b, c):
+    async def actor(a, b, c):
         result.append([a, b, c])
 
     result = []
@@ -124,7 +128,7 @@ async def test_run_with_params_inject_actor():
 
 @pytest.mark.asyncio
 async def test_spec():
-    def actor(a, b: str, c: int, d: bool, e: float, f: List, g: Dict):
+    async def actor(a, b: str, c: int, d: bool, e: float, f: List, g: Dict):
         pass
 
     params = new_actor('A', actor).specs

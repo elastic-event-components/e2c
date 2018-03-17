@@ -155,9 +155,9 @@ class BaseSession(Generic[Request, Response]):
                 # to avoid recursion
                 self.activate_trace = False
                 if name != const.OUT:
-                    if asyncio.iscoroutinefunction(self._tracer):
-                        await self._tracer(name)
-                    else: self._tracer(name)
+                    #if asyncio.iscoroutinefunction(self._tracer):
+                    await self._tracer(name)
+                    #else: self._tracer(name)
             finally:
                 self.activate_trace = True
 

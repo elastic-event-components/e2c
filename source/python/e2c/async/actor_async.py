@@ -89,9 +89,9 @@ class Actor(object):
         if not self.callable:
             raise errors.E2CActorError(
                 'Actor {0} has no callable function!'.format(self.name))
-        if asyncio.iscoroutinefunction(self.callable):
-            return await self.callable(*params)
-        return self.callable(*params)
+        #if asyncio.iscoroutinefunction(self.callable):
+        return await self.callable(*params)
+        #return self.callable(*params)
 
     async def run_with_params(self, *params) -> object:
         """
@@ -105,10 +105,9 @@ class Actor(object):
         """
         if self.session.activate_trace:
             await self.session.on_trace(self.name)
-        if asyncio.iscoroutinefunction(self.callable):
-            return await self.callable(*params)
-        return self.callable(*params)
-
+        #if asyncio.iscoroutinefunction(self.callable):
+        return await self.callable(*params)
+        #return self.callable(*params)
 
     def clone(self) -> 'Actor':
         """
