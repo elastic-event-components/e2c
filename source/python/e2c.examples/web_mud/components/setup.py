@@ -97,7 +97,7 @@ def run(cmd: str, out: Callable[[str], None]):
     sess.actor('show_welcome', commands.welcome.run)
 
     sess.load_graph(folder + '/config/setup.e2c')
-    #sess.visualize('components/graphviz/setup')
+    sess.visualize('components/graphviz/setup')
 
     start_actor = web.session.get_state('setup')
     sess.run_continues(cmd, out, start_actor)
