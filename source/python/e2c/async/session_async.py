@@ -52,10 +52,10 @@ class Result(object):
         :rtype: None
         """
         if self.value_callback:
-            if asyncio.iscoroutinefunction(self.value_callback):
-                await self.value_callback(data)
-            else:
-                self.value_callback(data)
+            #if asyncio.iscoroutinefunction(self.value_callback):
+            await self.value_callback(data)
+            #else:
+            #    self.value_callback(data)
         else:
             self.value = data
 
@@ -155,9 +155,9 @@ class BaseSession(Generic[Request, Response]):
                 # to avoid recursion
                 self.activate_trace = False
                 if name != const.OUT:
-                    if asyncio.iscoroutinefunction(self._tracer):
-                        await self._tracer(name)
-                    else: self._tracer(name)
+                    #if asyncio.iscoroutinefunction(self._tracer):
+                    await self._tracer(name)
+                    #else: self._tracer(name)
             finally:
                 self.activate_trace = True
 
@@ -251,7 +251,7 @@ class BaseSession(Generic[Request, Response]):
             if actor not in self._actors:
                 raise errors.E2CSessionError(
                     '{} is not a registered actor!'.format(actor))
-            runner = await self._actors[const.SELF].clone()
+            runner = self._actors[const.SELF].clone()
             runner.actors[const.RUN].clear()
             runner.on(const.RUN, self._actors[actor])
             await runner.run(request)
