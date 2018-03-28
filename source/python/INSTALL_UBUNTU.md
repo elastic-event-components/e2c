@@ -5,7 +5,7 @@ of E2C on Ubuntu that enables you to write applications in Python.
 We recommend the virtualenv installation. 
 Virtualenv is a virtual Python environment isolated from other Python development, 
 incapable of interfering with or being affected by other Python programs on the same machine.
-During the virtualenv installation process, you will install not only E2c but also all the packages that E2c requires.
+During the virtualenv installation process, you will install not only E2C but also all the packages that E2C requires.
 To start working with E2C, you simply need to "activate" the virtual environment. 
 All in all, virtualenv provides a safe and reliable mechanism for installing and running E2C.
  
