@@ -9,7 +9,7 @@ function flow graphs. The graph nodes represent any operations, while
 the graph edges represent the function parameters that build
 the flow between nodes. Elastic Event Components also includes flow visualization.
 
-# NEWS: E2C has moved to GitLab.
+# NEWS: E2C has moved to GitLab
 https://gitlab.com/elastic-event-components/e2c
 
 ## Installation
